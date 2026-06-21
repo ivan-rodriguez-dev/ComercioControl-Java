@@ -66,6 +66,9 @@ public class POSController {
                 + "  " + (usuario != null ? usuario.getNombre() : "") + " · Hoy " + fecha);
 
         cargarProductos();
+
+        // Foco en el buscador para poder escanear sin hacer clic primero
+        javafx.application.Platform.runLater(() -> txtBuscar.requestFocus());
     }
 
     private void cargarProductos() {
