@@ -55,6 +55,9 @@ public class POSController {
     private List<Producto> todosLosProductos = new ArrayList<>();
     private List<Producto> productosMostrados = new ArrayList<>();
 
+    // evita reentrada al reconstruir el carrito (al editar cantidad y perder el foco)
+    private boolean recargandoCarrito = false;
+
     @FXML
     public void initialize() {
         var usuario = SessionManager.getInstance().getUsuarioActual();
@@ -136,7 +139,54 @@ public class POSController {
         renderizarGrid(productosMostrados); // refrescar disponibilidad
     }
 
+    /** Fija la cantidad de un producto en el carrito, acotada entre 0 y el stock disponible. */
+    private void setCantidad(int productoId, int cantidad, int stock) {
+        if (cantidad <= 0) {
+            carrito.remove(productoId);
+        } else {
+            carrito.put(productoId, Math.min(cantidad, stock));
+        }
+        actualizarCarritoUI();
+        renderizarGrid(productosMostrados);
+    }
+
+    /**
+     * Se dispara al presionar Enter en el buscador. Pensado para lectores de código de
+     * barras (que escriben el código y envían Enter): agrega al carrito el producto cuyo
+     * código coincide exactamente, o el único resultado visible.
+     */
+    @FXML private void onCodigoEscaneado() {
+        String texto = txtBuscar.getText().trim();
+        if (texto.isEmpty()) return;
+
+        Producto p = todosLosProductos.stream()
+                .filter(x -> x.getCodigo() != null && x.getCodigo().equalsIgnoreCase(texto))
+                .findFirst()
+                .orElse(productosMostrados.size() == 1 ? productosMostrados.get(0) : null);
+
+        if (p == null) return; // sin coincidencia exacta ni resultado único: no hace nada
+
+        int disponible = p.getStockActual() - carrito.getOrDefault(p.getId(), 0);
+        if (disponible <= 0) {
+            new Alert(Alert.AlertType.WARNING,
+                    "Sin stock disponible de \"" + p.getNombre() + "\".", ButtonType.OK).showAndWait();
+            return;
+        }
+        agregarAlCarrito(p);
+        txtBuscar.clear();
+        onBuscar(); // restaura el grid completo para el siguiente escaneo
+    }
+
     private void actualizarCarritoUI() {
+        recargandoCarrito = true;
+        try {
+            reconstruirCarrito();
+        } finally {
+            recargandoCarrito = false;
+        }
+    }
+
+    private void reconstruirCarrito() {
         listaCarrito.getChildren().clear();
         boolean vacio = carrito.isEmpty();
         carritoVacio.setVisible(vacio);
@@ -167,15 +217,17 @@ public class POSController {
             precioUnit.getStyleClass().add("carrito-item-precio");
             info.getChildren().addAll(nombre, precioUnit);
 
-            // Controles cantidad
+            // Controles cantidad (editable: se puede escribir el número directamente)
+            int stockDisponible = p.getStockActual();
             Button menos = new Button("-");
             menos.getStyleClass().add("qty-btn");
-            Label qtyLabel = new Label(String.valueOf(qty));
-            qtyLabel.getStyleClass().add("qty-label");
+            TextField qtyField = new TextField(String.valueOf(qty));
+            qtyField.getStyleClass().add("qty-input");
+            qtyField.setPrefWidth(46);
             Button mas = new Button("+");
             mas.getStyleClass().add("qty-btn");
 
-            HBox ctrlQty = new HBox(4, menos, qtyLabel, mas);
+            HBox ctrlQty = new HBox(4, menos, qtyField, mas);
             ctrlQty.setAlignment(Pos.CENTER);
 
             // Precio total del item
@@ -191,24 +243,24 @@ public class POSController {
             listaCarrito.getChildren().add(fila);
 
             final int pid = p.getId();
-            menos.setOnAction(e -> {
-                int actual = carrito.getOrDefault(pid, 0);
-                if (actual <= 1) carrito.remove(pid);
-                else carrito.put(pid, actual - 1);
-                actualizarCarritoUI();
-                renderizarGrid(productosMostrados);
-            });
-            mas.setOnAction(e -> {
-                int actual = carrito.getOrDefault(pid, 0);
-                if (actual < p.getStockActual()) carrito.put(pid, actual + 1);
-                actualizarCarritoUI();
-                renderizarGrid(productosMostrados);
-            });
-            eliminar.setOnAction(e -> {
-                carrito.remove(pid);
-                actualizarCarritoUI();
-                renderizarGrid(productosMostrados);
-            });
+            menos.setOnAction(e -> setCantidad(pid, carrito.getOrDefault(pid, 0) - 1, stockDisponible));
+            mas.setOnAction(e -> setCantidad(pid, carrito.getOrDefault(pid, 0) + 1, stockDisponible));
+
+            // Escribir la cantidad directamente (Enter o al salir del campo)
+            Runnable commit = () -> {
+                if (recargandoCarrito) return;
+                String t = qtyField.getText().trim();
+                if (t.isEmpty()) { actualizarCarritoUI(); return; }
+                try {
+                    setCantidad(pid, Integer.parseInt(t), stockDisponible);
+                } catch (NumberFormatException ex) {
+                    actualizarCarritoUI(); // valor inválido: restaura la cantidad anterior
+                }
+            };
+            qtyField.setOnAction(e -> commit.run());
+            qtyField.focusedProperty().addListener((obs, antes, ahora) -> { if (!ahora) commit.run(); });
+
+            eliminar.setOnAction(e -> setCantidad(pid, 0, stockDisponible));
         }
         recalcular();
     }

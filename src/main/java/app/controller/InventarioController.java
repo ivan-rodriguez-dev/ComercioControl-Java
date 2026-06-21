@@ -423,6 +423,8 @@ public class InventarioController {
         scene.getStylesheets().add(getClass().getResource("/css/styles.css").toExternalForm());
         dialog.setScene(scene);
         dialog.sizeToScene();
+        // Foco en el campo Código para poder escanear el código de barras de inmediato
+        javafx.application.Platform.runLater(txtCodigo::requestFocus);
         dialog.showAndWait();
     }
 

@@ -500,6 +500,21 @@
     -fx-min-width: 20;
     -fx-alignment: CENTER;
 }
+.qty-input {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1e293b;
+    -fx-alignment: CENTER;
+    -fx-background-color: #f8fafc;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+    -fx-padding: 3 4;
+}
+.qty-input:focused {
+    -fx-border-color: #2563eb;
+    -fx-background-color: white;
+}
 
 /* ===== MODAL / DIALOG ===== */
 .modal-overlay {

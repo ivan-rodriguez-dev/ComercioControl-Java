@@ -20,10 +20,10 @@
 
         <!-- Búsqueda -->
         <TextField fx:id="txtBuscar" styleClass="search-field"
-                   promptText="&#128269; Buscar producto por nombre o código..."
+                   promptText="&#128269; Buscar o escanear código de barras..."
                    prefHeight="40" maxWidth="Infinity"
                    style="-fx-padding: 0 0 0 0; -fx-font-size: 13px;"
-                   onKeyReleased="#onBuscar"/>
+                   onKeyReleased="#onBuscar" onAction="#onCodigoEscaneado"/>
 
         <!-- Grid de productos -->
         <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true"
