@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="app.controller.ReportesController"
+      styleClass="bg-app" spacing="0">
+    <padding><Insets top="28" left="28" right="28" bottom="28"/></padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 16 0;">
+        <Label text="Reportes" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblHeaderInfo" styleClass="header-info"/>
+    </HBox>
+
+    <!-- Tabs + barra fechas -->
+    <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="14">
+
+        <!-- Tabs de tipo de reporte -->
+        <HBox spacing="6">
+            <Button fx:id="btnTabVentas"     text="Ventas por período"  styleClass="btn-primary"   prefHeight="34" onAction="#mostrarVentas"/>
+            <Button fx:id="btnTabVendidos"   text="Más vendidos"        styleClass="btn-secondary" prefHeight="34" onAction="#mostrarVendidos"/>
+            <Button fx:id="btnTabInventario" text="Inventario actual"   styleClass="btn-secondary" prefHeight="34" onAction="#mostrarInventario"/>
+            <Button fx:id="btnTabStock"      text="Stock crítico"       styleClass="btn-secondary" prefHeight="34" onAction="#mostrarStock"/>
+            <HBox HBox.hgrow="ALWAYS"/>
+            <Button text="Exportar PDF ↓"   styleClass="btn-secondary" prefHeight="34" onAction="#exportarPDF"/>
+            <Button text="Exportar Excel ↓" styleClass="btn-primary"   prefHeight="34" onAction="#exportarExcel"/>
+        </HBox>
+
+        <!-- Filtro de fechas -->
+        <HBox alignment="CENTER_LEFT" spacing="12">
+            <Label text="Desde" styleClass="label-muted"/>
+            <DatePicker fx:id="dpDesde" prefHeight="34" prefWidth="140"/>
+            <Label text="Hasta" styleClass="label-muted"/>
+            <DatePicker fx:id="dpHasta" prefHeight="34" prefWidth="140"/>
+            <Button text="Aplicar" styleClass="btn-secondary" prefHeight="34" onAction="#aplicarFiltro"/>
+        </HBox>
+
+        <!-- Tarjetas de resumen -->
+        <HBox fx:id="panelStats" spacing="14"/>
+
+        <!-- Gráfica -->
+        <StackPane fx:id="chartContainer" prefHeight="200" maxWidth="Infinity"
+                   style="-fx-background-color: #f8fafc; -fx-background-radius: 8;">
+            <Canvas fx:id="canvasChart" height="200"/>
+        </StackPane>
+
+        <!-- Tabla de resultados -->
+        <TableView fx:id="tablaReporte" VBox.vgrow="ALWAYS">
+            <placeholder>
+                <Label text="Selecciona un tipo de reporte y aplica el filtro" styleClass="label-muted"/>
+            </placeholder>
+        </TableView>
+    </VBox>
+</VBox>

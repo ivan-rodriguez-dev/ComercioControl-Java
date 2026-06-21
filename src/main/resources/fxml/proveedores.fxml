@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="app.controller.ProveedoresController"
+      fx:id="rootPane"
+      styleClass="bg-app" spacing="0">
+
+    <!-- Lista de proveedores -->
+    <VBox HBox.hgrow="ALWAYS" spacing="0">
+        <padding><Insets top="28" left="28" right="14" bottom="28"/></padding>
+
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 16 0;">
+            <Label text="Proveedores" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblHeaderInfo" styleClass="header-info"/>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 0 0 14 0;">
+            <TextField fx:id="txtBuscar" styleClass="search-field"
+                       promptText="&#128269; Buscar por nombre o NIT..."
+                       prefHeight="36" HBox.hgrow="ALWAYS"
+                       onKeyReleased="#onBuscar"/>
+            <Button text="+ Nuevo proveedor" styleClass="btn-primary"
+                    prefHeight="36" onAction="#abrirFormNuevo"/>
+        </HBox>
+
+        <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="0">
+            <TableView fx:id="tablaProveedores" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colNit"        text="NIT"           prefWidth="110"/>
+                    <TableColumn fx:id="colRazon"      text="Razón social"  prefWidth="200"/>
+                    <TableColumn fx:id="colContacto"   text="Contacto"      prefWidth="110"/>
+                    <TableColumn fx:id="colTelefono"   text="Teléfono"      prefWidth="110"/>
+                    <TableColumn fx:id="colProductos"  text="Productos"     prefWidth="80"/>
+                    <TableColumn fx:id="colEstado"     text="Estado"        prefWidth="80"/>
+                    <TableColumn fx:id="colAcciones"   text="Acciones"      prefWidth="90" sortable="false"/>
+                </columns>
+                <placeholder>
+                    <Label text="No hay proveedores registrados" styleClass="label-muted"/>
+                </placeholder>
+            </TableView>
+        </VBox>
+    </VBox>
+
+    <!-- Panel detalle -->
+    <VBox prefWidth="280" minWidth="250" spacing="0">
+        <padding><Insets top="28" left="14" right="28" bottom="28"/></padding>
+        <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="12">
+            <VBox fx:id="panelDetalle" spacing="12" visible="false" managed="false">
+                <Label text="DETALLE PROVEEDOR" styleClass="card-title"/>
+                <Label fx:id="lblDetNit"    styleClass="label-muted"/>
+                <Label fx:id="lblDetNombre" style="-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: #1e293b;" wrapText="true"/>
+                <Label fx:id="lblDetContacto" styleClass="label-muted"/>
+                <Label fx:id="lblDetTelefono" styleClass="label-muted"/>
+                <Label fx:id="lblDetEmail"    styleClass="label-muted" wrapText="true"/>
+                <Label fx:id="lblDetProductos" styleClass="label-muted"/>
+                <Label fx:id="lblDetEstado"/>
+            </VBox>
+            <VBox fx:id="panelVacio" alignment="CENTER" spacing="8" VBox.vgrow="ALWAYS">
+                <Label text="⊕" style="-fx-font-size: 32px; -fx-text-fill: #cbd5e1;"/>
+                <Label text="Selecciona un proveedor para ver su detalle"
+                       styleClass="label-muted" wrapText="true" alignment="CENTER"/>
+            </VBox>
+        </VBox>
+    </VBox>
+</HBox>

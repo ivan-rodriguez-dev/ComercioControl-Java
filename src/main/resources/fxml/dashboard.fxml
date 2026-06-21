@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="app.controller.DashboardController"
+      styleClass="bg-app" spacing="0">
+    <padding><Insets top="28" left="28" right="28" bottom="28"/></padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 20 0;">
+        <Label text="Dashboard" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblHeaderInfo" styleClass="header-info" text="AD  Administrador · Hoy"/>
+    </HBox>
+
+    <!-- Tarjetas stats -->
+    <HBox spacing="14" style="-fx-padding: 0 0 20 0;">
+        <!-- Ventas hoy -->
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="4">
+            <Label text="Ventas hoy" styleClass="stat-label"/>
+            <Label fx:id="lblVentasHoy" text="0" styleClass="stat-value"/>
+            <Label fx:id="lblVentasHoySub" text="" styleClass="stat-sub-green"/>
+        </VBox>
+        <!-- Productos activos -->
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="4">
+            <Label text="Productos activos" styleClass="stat-label"/>
+            <Label fx:id="lblProductos" text="0" styleClass="stat-value"/>
+            <Label fx:id="lblCategorias" text="" styleClass="stat-sub"/>
+        </VBox>
+        <!-- Alertas stock -->
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="4">
+            <Label text="Alertas de stock" styleClass="stat-label"/>
+            <Label fx:id="lblAlertas" text="0" styleClass="stat-value" style="-fx-text-fill: #ef4444;"/>
+            <Label fx:id="lblAlertasSub" text="Requieren reabastecimiento" styleClass="stat-sub-red"/>
+        </VBox>
+        <!-- Ingresos mes -->
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="4">
+            <Label text="Ingresos del mes" styleClass="stat-label"/>
+            <Label fx:id="lblIngresosMes" text="0" styleClass="stat-value-green"/>
+            <Label fx:id="lblIngresosMesSub" text="" styleClass="stat-sub"/>
+        </VBox>
+        <!-- Valor inventario -->
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="4">
+            <Label text="Valor inventario" styleClass="stat-label"/>
+            <Label fx:id="lblValorInventario" text="0" styleClass="stat-value"
+                   style="-fx-text-fill: #7c3aed;"/>
+            <Label fx:id="lblValorInventarioSub" text="A precio de venta" styleClass="stat-sub"/>
+        </VBox>
+    </HBox>
+
+    <!-- Gráfico + Stock Crítico -->
+    <HBox spacing="14" VBox.vgrow="ALWAYS">
+        <!-- Ventas por día -->
+        <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="10">
+            <Label text="VENTAS POR DÍA (SEMANA)" styleClass="card-title"/>
+            <Canvas fx:id="canvasGrafico" width="400" height="200" VBox.vgrow="ALWAYS"/>
+        </VBox>
+
+        <!-- Stock crítico -->
+        <VBox styleClass="card" prefWidth="340" spacing="10">
+            <Label text="ALERTAS DE STOCK CRÍTICO" styleClass="card-title"/>
+            <VBox fx:id="panelCritico" spacing="8"/>
+            <Button fx:id="btnVerTodos" text="Ver todos →"
+                    styleClass="btn-secondary"
+                    style="-fx-font-size: 12px; -fx-padding: 5 12;"
+                    onAction="#verTodosCriticos"/>
+        </VBox>
+    </HBox>
+</VBox>

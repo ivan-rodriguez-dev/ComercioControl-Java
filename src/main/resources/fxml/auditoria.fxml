@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="app.controller.AuditoriaController"
+      styleClass="bg-app" spacing="0">
+    <padding><Insets top="28" left="28" right="28" bottom="28"/></padding>
+
+    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 16 0;">
+        <Label text="Auditoría del sistema" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+        <Button text="↺  Actualizar" styleClass="btn-secondary" prefHeight="36" onAction="#recargar"/>
+    </HBox>
+
+    <!-- Filtros -->
+    <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-padding: 0 0 14 0;">
+        <TextField fx:id="txtBuscar" styleClass="search-field"
+                   promptText="&#128269; Buscar acción, tabla o detalle..."
+                   prefHeight="36" prefWidth="300" onKeyReleased="#onBuscar"/>
+        <ComboBox fx:id="cbAccion" prefHeight="36" prefWidth="160"
+                  promptText="Todas las acciones" styleClass="combo-custom"
+                  onAction="#onBuscar"/>
+        <Label fx:id="lblTotal" styleClass="label-muted"/>
+    </HBox>
+
+    <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="0">
+        <TableView fx:id="tablaAuditoria" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colFecha"   text="Fecha/Hora"   prefWidth="140"/>
+                <TableColumn fx:id="colUsuario" text="Usuario"      prefWidth="130"/>
+                <TableColumn fx:id="colAccion"  text="Acción"       prefWidth="110"/>
+                <TableColumn fx:id="colTabla"   text="Módulo"       prefWidth="110"/>
+                <TableColumn fx:id="colDetalle" text="Detalle"      prefWidth="300"/>
+            </columns>
+            <placeholder>
+                <Label text="Sin registros de auditoría" styleClass="label-muted"/>
+            </placeholder>
+        </TableView>
+    </VBox>
+</VBox>

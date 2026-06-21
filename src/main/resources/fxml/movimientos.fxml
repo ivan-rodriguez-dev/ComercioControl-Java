@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="app.controller.MovimientosController"
+      styleClass="bg-app" spacing="0">
+
+    <!-- Panel izquierdo: formulario -->
+    <VBox prefWidth="320" minWidth="290" spacing="0">
+        <padding><Insets top="28" left="28" right="14" bottom="28"/></padding>
+
+        <Label text="Movimientos de Inventario" styleClass="page-title"
+               style="-fx-font-size: 18px;" wrapText="true"/>
+        <Label fx:id="lblHeaderInfo" styleClass="header-info"
+               style="-fx-padding: 4 0 20 0;"/>
+
+        <VBox styleClass="card" spacing="16">
+            <Label text="REGISTRAR MOVIMIENTO" styleClass="card-title"/>
+
+            <!-- Producto -->
+            <VBox spacing="4">
+                <Label text="Producto" styleClass="form-label"/>
+                <ComboBox fx:id="cbProducto" styleClass="combo-custom"
+                          promptText="— Selecciona un producto —"
+                          prefWidth="Infinity" prefHeight="38"
+                          onAction="#onProductoSeleccionado"/>
+            </VBox>
+
+            <!-- Tipo de movimiento -->
+            <VBox spacing="4">
+                <Label text="Tipo de movimiento" styleClass="form-label"/>
+                <ComboBox fx:id="cbTipo" styleClass="combo-custom"
+                          prefWidth="Infinity" prefHeight="38"
+                          onAction="#recalcularStock"/>
+            </VBox>
+
+            <!-- Cantidad -->
+            <VBox spacing="4">
+                <Label text="Cantidad" styleClass="form-label"/>
+                <TextField fx:id="txtCantidad" text="0" styleClass="text-field-custom"
+                           prefHeight="38" onKeyReleased="#recalcularStock"/>
+            </VBox>
+
+            <!-- Stock resultante -->
+            <HBox alignment="CENTER_LEFT" spacing="8">
+                <Label text="Stock resultante:" styleClass="label-muted"/>
+                <Label fx:id="lblStockResultante" text="—"
+                       style="-fx-font-weight: bold; -fx-font-size: 14px; -fx-text-fill: #1e293b;"/>
+            </HBox>
+
+            <!-- Observación -->
+            <VBox spacing="4">
+                <Label text="Observación (opcional)" styleClass="form-label"/>
+                <TextArea fx:id="txtObservacion" prefRowCount="3"
+                          promptText="Ej: Recepción pedido proveedor #42..."
+                          style="-fx-background-color: white; -fx-border-color: #d1d5db; -fx-border-radius: 7; -fx-background-radius: 7; -fx-font-size: 13px;"/>
+            </VBox>
+
+            <Label fx:id="lblError" styleClass="error-label" visible="false" managed="false" wrapText="true"/>
+
+            <Button text="Registrar movimiento" styleClass="btn-primary"
+                    prefHeight="40" maxWidth="Infinity"
+                    onAction="#registrarMovimiento"/>
+        </VBox>
+    </VBox>
+
+    <!-- Panel derecho: historial -->
+    <VBox HBox.hgrow="ALWAYS" spacing="0">
+        <padding><Insets top="28" left="14" right="28" bottom="28"/></padding>
+
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 14 0;" spacing="10">
+            <Label text="HISTORIAL" styleClass="card-title" style="-fx-font-size: 13px;"
+                   HBox.hgrow="ALWAYS"/>
+            <ComboBox fx:id="cbFiltroTipo" styleClass="combo-custom"
+                      prefHeight="34" prefWidth="160"
+                      onAction="#filtrarHistorial"/>
+        </HBox>
+
+        <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="0">
+            <TableView fx:id="tablaMovimientos" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colFecha"    text="Fecha"          prefWidth="120"/>
+                    <TableColumn fx:id="colProducto" text="Producto"        prefWidth="150"/>
+                    <TableColumn fx:id="colTipo"     text="Tipo"            prefWidth="90"/>
+                    <TableColumn fx:id="colCant"     text="Cant."           prefWidth="60"/>
+                    <TableColumn fx:id="colStock"    text="Stock result."   prefWidth="95"/>
+                    <TableColumn fx:id="colUsuario"  text="Usuario"         prefWidth="90"/>
+                    <TableColumn fx:id="colObs"      text="Obs."            prefWidth="120"/>
+                </columns>
+                <placeholder>
+                    <Label text="Sin movimientos registrados" styleClass="label-muted"/>
+                </placeholder>
+            </TableView>
+        </VBox>
+    </VBox>
+</HBox>

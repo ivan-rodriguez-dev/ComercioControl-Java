@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="app.controller.InventarioController"
+      fx:id="rootPane"
+      styleClass="bg-app" spacing="0">
+    <padding><Insets top="28" left="28" right="28" bottom="28"/></padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 16 0;">
+        <Label text="Inventario" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblHeaderInfo" styleClass="header-info"/>
+    </HBox>
+
+    <!-- Barra de herramientas -->
+    <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 0 0 14 0;">
+        <TextField fx:id="txtBuscar" styleClass="search-field"
+                   promptText="&#128269; Buscar por nombre, código o categoría..."
+                   prefWidth="280" prefHeight="36"
+                   onKeyReleased="#onBuscar"/>
+
+        <ComboBox fx:id="cbCategoria" styleClass="combo-custom"
+                  promptText="Todas las categorías"
+                  prefHeight="36" prefWidth="190"
+                  onAction="#onFiltrar"/>
+
+        <ComboBox fx:id="cbEstado" styleClass="combo-custom"
+                  promptText="Todos los estados"
+                  prefHeight="36" prefWidth="160"
+                  onAction="#onFiltrar"/>
+
+        <HBox HBox.hgrow="ALWAYS"/>
+
+        <Button text="Exportar ↓" styleClass="btn-secondary"
+                prefHeight="36" onAction="#exportar"/>
+        <Button text="+ Nuevo producto" styleClass="btn-primary"
+                prefHeight="36" onAction="#abrirFormNuevo"/>
+    </HBox>
+
+    <!-- Resumen valor inventario -->
+    <HBox spacing="12" style="-fx-padding: 0 0 14 0;">
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="4">
+            <Label text="PRODUCTOS" styleClass="stat-label"/>
+            <Label fx:id="lblStatProductos" text="—" styleClass="stat-value"
+                   style="-fx-font-size: 20px;"/>
+        </VBox>
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="4">
+            <Label text="UNIDADES EN STOCK" styleClass="stat-label"/>
+            <Label fx:id="lblStatUnidades" text="—" styleClass="stat-value"
+                   style="-fx-font-size: 20px;"/>
+        </VBox>
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="4">
+            <Label text="VALOR A COSTO" styleClass="stat-label"/>
+            <Label fx:id="lblStatValorCosto" text="—" styleClass="stat-value"
+                   style="-fx-font-size: 20px;"/>
+            <Label text="Costo de reposición" styleClass="stat-sub"/>
+        </VBox>
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="4">
+            <Label text="VALOR A PRECIO VENTA" styleClass="stat-label"/>
+            <Label fx:id="lblStatValorVenta" text="—" styleClass="stat-value-green"
+                   style="-fx-font-size: 20px;"/>
+            <Label text="Potencial de ingresos" styleClass="stat-sub"/>
+        </VBox>
+    </HBox>
+
+    <!-- Tabla -->
+    <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="0">
+        <TableView fx:id="tablaProductos" VBox.vgrow="ALWAYS"
+                   style="-fx-background-color: transparent;">
+            <columns>
+                <TableColumn fx:id="colCodigo"   text="Código"       prefWidth="80"  minWidth="70"/>
+                <TableColumn fx:id="colNombre"   text="Nombre"       prefWidth="200" minWidth="150"/>
+                <TableColumn fx:id="colCategoria" text="Categoría"   prefWidth="110" minWidth="90"/>
+                <TableColumn fx:id="colStock"    text="Stock actual"  prefWidth="100" minWidth="80"/>
+                <TableColumn fx:id="colStockMin" text="Stock mín."   prefWidth="90"  minWidth="70"/>
+                <TableColumn fx:id="colCosto"    text="P. costo"     prefWidth="95"  minWidth="80"/>
+                <TableColumn fx:id="colVenta"    text="P. venta"     prefWidth="95"  minWidth="80"/>
+                <TableColumn fx:id="colEstado"   text="Estado"       prefWidth="90"  minWidth="80"/>
+                <TableColumn fx:id="colAcciones" text="Acciones"     prefWidth="110" minWidth="100" sortable="false"/>
+            </columns>
+            <placeholder>
+                <Label text="No hay productos que mostrar" styleClass="label-muted"/>
+            </placeholder>
+        </TableView>
+
+        <!-- Paginación -->
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 10 0 0 0;" spacing="8">
+            <Label fx:id="lblConteo" text="" styleClass="label-muted" HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnPrev" text="←" styleClass="btn-secondary"
+                    prefWidth="32" prefHeight="30" onAction="#paginaAnterior"/>
+            <Label fx:id="lblPagina" text="1" styleClass="label-bold"
+                   style="-fx-padding: 0 8;"/>
+            <Button fx:id="btnNext" text="→" styleClass="btn-secondary"
+                    prefWidth="32" prefHeight="30" onAction="#paginaSiguiente"/>
+        </HBox>
+    </VBox>
+
+    <!-- MODAL superposición -->
+    <StackPane fx:id="modalOverlay" visible="false" managed="false"
+               style="-fx-background-color: rgba(0,0,0,0.45);"
+               VBox.vgrow="ALWAYS">
+    </StackPane>
+</VBox>

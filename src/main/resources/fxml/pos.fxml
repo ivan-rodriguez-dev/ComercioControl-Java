@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="app.controller.POSController"
+      fx:id="rootPane"
+      styleClass="bg-app" spacing="0">
+
+    <!-- Panel izquierdo: catálogo -->
+    <VBox HBox.hgrow="ALWAYS" spacing="0">
+        <padding><Insets top="28" left="28" right="14" bottom="28"/></padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 16 0;">
+            <Label text="Punto de Venta (POS)" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblHeaderInfo" styleClass="header-info"/>
+        </HBox>
+
+        <!-- Búsqueda -->
+        <TextField fx:id="txtBuscar" styleClass="search-field"
+                   promptText="&#128269; Buscar producto por nombre o código..."
+                   prefHeight="40" maxWidth="Infinity"
+                   style="-fx-padding: 0 0 0 0; -fx-font-size: 13px;"
+                   onKeyReleased="#onBuscar"/>
+
+        <!-- Grid de productos -->
+        <ScrollPane VBox.vgrow="ALWAYS" fitToWidth="true"
+                    style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-padding: 10 0 0 0;">
+            <FlowPane fx:id="gridProductos" hgap="10" vgap="10"
+                      style="-fx-background-color: transparent; -fx-padding: 4 2 4 2;"/>
+        </ScrollPane>
+    </VBox>
+
+    <!-- Panel derecho: carrito -->
+    <VBox styleClass="carrito-panel" prefWidth="300" minWidth="280" spacing="0">
+        <padding><Insets top="20" left="16" right="16" bottom="16"/></padding>
+
+        <!-- Título carrito -->
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 10 0;">
+            <Label text="CARRITO" styleClass="carrito-title" HBox.hgrow="ALWAYS"/>
+            <Button text="Limpiar ✕" styleClass="btn-icon"
+                    style="-fx-text-fill: #ef4444; -fx-font-size: 12px;"
+                    onAction="#limpiarCarrito"/>
+        </HBox>
+
+        <!-- Cliente -->
+        <HBox alignment="CENTER_LEFT" spacing="6"
+              style="-fx-padding: 6 10; -fx-background-color: #f8fafc; -fx-background-radius: 8; -fx-margin: 0 0 10 0;">
+            <Label text="&#128100;" style="-fx-font-size: 13px; -fx-text-fill: #64748b;"/>
+            <Label fx:id="lblClienteSeleccionado" text="Consumidor final"
+                   HBox.hgrow="ALWAYS"
+                   style="-fx-font-size: 12px; -fx-text-fill: #64748b;"/>
+            <Button text="Cambiar" styleClass="btn-icon"
+                    style="-fx-font-size: 11px; -fx-text-fill: #2563eb;"
+                    onAction="#seleccionarCliente"/>
+        </HBox>
+
+        <!-- Lista de items del carrito -->
+        <ScrollPane fx:id="scrollCarrito" VBox.vgrow="ALWAYS" fitToWidth="true"
+                    style="-fx-background-color: transparent; -fx-border-color: transparent;">
+            <VBox fx:id="listaCarrito" spacing="10">
+                <!-- Items se agregan dinámicamente -->
+            </VBox>
+        </ScrollPane>
+
+        <!-- Placeholder vacío -->
+        <VBox fx:id="carritoVacio" alignment="CENTER" spacing="8" VBox.vgrow="ALWAYS"
+              style="-fx-padding: 30 0;">
+            <Label text="&#128722;" style="-fx-font-size: 36px; -fx-text-fill: #cbd5e1;"/>
+            <Label text="Toca un producto para agregarlo" styleClass="label-muted"
+                   style="-fx-font-size: 12px;" wrapText="true" alignment="CENTER"/>
+        </VBox>
+
+        <Separator style="-fx-padding: 8 0;"/>
+
+        <!-- Totales -->
+        <VBox spacing="8" style="-fx-padding: 12 0 0 0;">
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Subtotal" styleClass="label-muted" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblSubtotal" text="0" styleClass="label-bold"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT">
+                <Label text="Descuento %" styleClass="label-muted" HBox.hgrow="ALWAYS"/>
+                <TextField fx:id="txtDescuento" text="0" prefWidth="60" prefHeight="30"
+                           styleClass="text-field-custom"
+                           style="-fx-font-size: 12px; -fx-padding: 4 8;"
+                           onKeyReleased="#recalcular"/>
+            </HBox>
+            <HBox alignment="CENTER_LEFT">
+                <Label text="IVA (19%)" styleClass="label-muted" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblIva" text="0" styleClass="label-muted"/>
+            </HBox>
+            <Separator/>
+            <HBox alignment="CENTER_LEFT">
+                <Label text="TOTAL" styleClass="carrito-total-label" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblTotal" text="0" styleClass="carrito-total-valor"/>
+            </HBox>
+        </VBox>
+
+        <!-- Botón cobrar -->
+        <Button fx:id="btnCobrar" text="Cobrar" styleClass="btn-primary"
+                maxWidth="Infinity" prefHeight="44"
+                style="-fx-font-size: 15px; -fx-margin: 12 0 0 0;"
+                onAction="#cobrar" disable="true"/>
+        <VBox.margin>
+            <Insets top="12"/>
+        </VBox.margin>
+    </VBox>
+</HBox>

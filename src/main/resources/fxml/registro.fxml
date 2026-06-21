@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="app.controller.RegistroController"
+      stylesheets="@../css/styles.css"
+      prefWidth="920" prefHeight="560"
+      style="-fx-background-color: #e5e5e5;">
+
+    <!-- Panel izquierdo azul (idéntico al login) -->
+    <VBox styleClass="login-panel-left" prefWidth="360" spacing="0">
+        <padding><Insets top="40" left="36" right="36" bottom="28"/></padding>
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <VBox styleClass="login-logo-box" alignment="CENTER"
+                  style="-fx-background-color: rgba(255,255,255,0.15); -fx-background-radius: 8; -fx-padding: 8;">
+                <SVGPath styleClass="sidebar-logo-icon"
+                         content="M21.9 8.89l-1.05-4.37c-.22-.9-1-1.52-1.91-1.52H5.05c-.9 0-1.69.63-1.9 1.52L2.1 8.89c-.24 1.02-.02 2.06.62 2.88.08.11.19.19.28.29V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6.94c.09-.09.2-.18.28-.28.64-.82.87-1.87.62-2.89zM18.91 4.99l1.05 4.37c.1.42.01.84-.25 1.17-.14.18-.44.48-.94.48-.61 0-1.14-.49-1.21-1.14L16.98 5l1.93-.01zM13 5h1.96l.54 4.52c.05.39-.07.78-.33 1.07-.22.26-.54.41-.95.41-.67 0-1.22-.59-1.22-1.31V5zM8.49 9.52L9.04 5H11v4.69c0 .72-.55 1.31-1.29 1.31-.34 0-.65-.15-.89-.41-.25-.29-.37-.68-.33-1.07zm-4.45-.16L5.09 5h1.93l-.57 4.86c-.08.65-.6 1.14-1.21 1.14-.49 0-.8-.3-.93-.48-.27-.32-.36-.75-.27-1.16zM6 19v-6.03c.08.01.15.03.23.03.87 0 1.66-.36 2.24-.95.6.6 1.4.95 2.31.95.87 0 1.65-.36 2.23-.93.59.57 1.39.93 2.29.93.84 0 1.64-.35 2.24-.95.58.59 1.37.95 2.24.95.08 0 .15-.02.23-.03V19H6z"/>
+            </VBox>
+            <VBox spacing="1">
+                <Label text="ComercioControl" styleClass="sidebar-title"/>
+                <Label text="Gestión de inventario" styleClass="sidebar-subtitle"/>
+            </VBox>
+        </HBox>
+
+        <VBox VBox.vgrow="ALWAYS"/>
+
+        <VBox spacing="20">
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <VBox style="-fx-background-color: rgba(255,255,255,0.15); -fx-background-radius: 6; -fx-padding: 6;" alignment="CENTER">
+                    <SVGPath styleClass="login-feature-icon" content="M20 2H4c-1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1 1.1 2 2 2h14c.9 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-1-2-2-2zm-5 12H9v-2h6v2zm5-7H4V4h16v3z"/>
+                </VBox>
+                <VBox spacing="2">
+                    <Label text="Control de inventario" styleClass="login-feature-title"/>
+                    <Label text="Entradas, salidas y alertas de stock en tiempo real" styleClass="login-feature-desc" wrapText="true"/>
+                </VBox>
+            </HBox>
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <VBox style="-fx-background-color: rgba(255,255,255,0.15); -fx-background-radius: 6; -fx-padding: 6;" alignment="CENTER">
+                    <SVGPath styleClass="login-feature-icon" content="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/>
+                </VBox>
+                <VBox spacing="2">
+                    <Label text="Punto de venta (POS)" styleClass="login-feature-title"/>
+                    <Label text="Registra ventas rápido y genera recibos al instante" styleClass="login-feature-desc" wrapText="true"/>
+                </VBox>
+            </HBox>
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <VBox style="-fx-background-color: rgba(255,255,255,0.15); -fx-background-radius: 6; -fx-padding: 6;" alignment="CENTER">
+                    <SVGPath styleClass="login-feature-icon" content="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/>
+                </VBox>
+                <VBox spacing="2">
+                    <Label text="Reportes y estadísticas" styleClass="login-feature-title"/>
+                    <Label text="Visualiza ventas, utilidades y productos top" styleClass="login-feature-desc" wrapText="true"/>
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <VBox VBox.vgrow="ALWAYS"/>
+
+        <VBox spacing="4" style="-fx-padding: 0;">
+            <Label text="v1.0.0 · SENA · 2026" styleClass="login-version"/>
+        </VBox>
+    </VBox>
+
+    <!-- Panel derecho: formulario de registro -->
+    <VBox styleClass="login-panel-right" HBox.hgrow="ALWAYS" spacing="0">
+        <padding><Insets top="36" left="52" right="52" bottom="28"/></padding>
+
+        <!-- Título -->
+        <VBox spacing="4" style="-fx-padding: 0 0 22 0;">
+            <Label text="Crear cuenta" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+            <Label text="Completa los datos para registrar un nuevo usuario"
+                   style="-fx-font-size: 13px; -fx-text-fill: #64748b;"/>
+        </VBox>
+
+        <!-- Fila 1: Nombres | Apellidos -->
+        <HBox spacing="16" style="-fx-padding: 0 0 14 0;">
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label text="Nombres *" styleClass="login-field-label"/>
+                <TextField fx:id="txtNombres" styleClass="text-field-custom"
+                           promptText="Ej: Ana María" prefHeight="40"
+                           onKeyReleased="#actualizarUsuarioGenerado"/>
+            </VBox>
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label text="Apellidos *" styleClass="login-field-label"/>
+                <TextField fx:id="txtApellidos" styleClass="text-field-custom"
+                           promptText="Ej: García López" prefHeight="40"
+                           onKeyReleased="#actualizarUsuarioGenerado"/>
+            </VBox>
+        </HBox>
+
+        <!-- Fila 2: Cédula | Fecha de Nacimiento -->
+        <HBox spacing="16" style="-fx-padding: 0 0 14 0;">
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label text="Cédula *" styleClass="login-field-label"/>
+                <TextField fx:id="txtCedula" styleClass="text-field-custom"
+                           promptText="Ej: 1020304050" prefHeight="40"/>
+            </VBox>
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label text="Fecha de Nacimiento *" styleClass="login-field-label"/>
+                <DatePicker fx:id="dpFecha" prefHeight="40" maxWidth="Infinity"
+                            promptText="dd/mm/aaaa"/>
+            </VBox>
+        </HBox>
+
+        <!-- Fila 3: Rol (oculto cuando es el primer usuario) -->
+        <VBox fx:id="vbRol" spacing="6" style="-fx-padding: 0 0 14 0;">
+            <Label text="Rol *" styleClass="login-field-label"/>
+            <ComboBox fx:id="cbRol" prefHeight="40" maxWidth="Infinity" styleClass="combo-custom"/>
+        </VBox>
+
+        <!-- Mensaje primer administrador -->
+        <Label fx:id="lblPrimerAdmin" text="&#9733;  Serás el administrador del sistema"
+               visible="false" managed="false"
+               style="-fx-text-fill: #7c3aed; -fx-font-size: 13px; -fx-font-weight: bold;
+                      -fx-padding: 0 0 10 0;"/>
+
+        <!-- Info: usuario y contraseña generados -->
+        <HBox fx:id="boxInfoUsuario" spacing="8" alignment="CENTER_LEFT"
+              style="-fx-background-color: #eff6ff; -fx-background-radius: 8;
+                     -fx-border-color: #bfdbfe; -fx-border-radius: 8;
+                     -fx-padding: 10 14; -fx-margin: 0 0 14 0;"
+              visible="false" managed="false">
+            <Label text="&#9432;" style="-fx-text-fill: #2563eb; -fx-font-size: 15px;"/>
+            <Label fx:id="lblInfoUsuario" text="" wrapText="true" HBox.hgrow="ALWAYS"
+                   style="-fx-text-fill: #1d4ed8; -fx-font-size: 12px;"/>
+        </HBox>
+
+        <!-- Error -->
+        <Label fx:id="lblError" styleClass="error-label" text=""
+               visible="false" managed="false" wrapText="true"
+               style="-fx-padding: 0 0 8 0;"/>
+
+        <VBox VBox.vgrow="ALWAYS"/>
+
+        <!-- Botones -->
+        <HBox spacing="12" alignment="CENTER_RIGHT" style="-fx-padding: 0 0 6 0;">
+            <Button text="&#x2715;  Cancelar" styleClass="btn-secondary"
+                    prefHeight="40" prefWidth="130" onAction="#cancelar"/>
+            <Button text="&#128190;  Guardar" styleClass="btn-primary"
+                    prefHeight="40" prefWidth="130" onAction="#guardar"/>
+        </HBox>
+
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 8 0 0 0;">
+            <Label text="* Campos obligatorios"
+                   style="-fx-text-fill: #94a3b8; -fx-font-size: 11px;" HBox.hgrow="ALWAYS"/>
+            <Hyperlink fx:id="lnkIniciarSesion" text="← Ya tengo cuenta"
+                       onAction="#irALogin" visible="false" managed="false"
+                       style="-fx-text-fill: #2563eb; -fx-font-size: 12px; -fx-border-color: transparent;"/>
+        </HBox>
+    </VBox>
+</HBox>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="app.controller.ClientesController"
+      fx:id="rootPane"
+      styleClass="bg-app" spacing="0">
+    <padding><Insets top="28" left="28" right="28" bottom="28"/></padding>
+
+    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 16 0;">
+        <Label text="Gestión de Clientes" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+        <Button text="+ Nuevo cliente" styleClass="btn-primary"
+                prefHeight="36" onAction="#abrirFormNuevo"/>
+    </HBox>
+
+    <!-- Búsqueda -->
+    <TextField fx:id="txtBuscar" styleClass="search-field"
+               promptText="&#128269; Buscar por nombre o cédula..."
+               prefHeight="36" maxWidth="Infinity"
+               style="-fx-padding: 0 0 14 0; -fx-font-size: 13px;"
+               onKeyReleased="#onBuscar"/>
+
+    <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="0" style="-fx-padding: 14 0 0 0;">
+        <TableView fx:id="tablaClientes" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colNombre"   text="Nombre"      prefWidth="200"/>
+                <TableColumn fx:id="colCedula"   text="Cédula / NIT" prefWidth="130"/>
+                <TableColumn fx:id="colTelefono" text="Teléfono"    prefWidth="120"/>
+                <TableColumn fx:id="colEmail"    text="Email"       prefWidth="180"/>
+                <TableColumn fx:id="colActivo"   text="Estado"      prefWidth="90"/>
+                <TableColumn fx:id="colAccion"   text="Acciones"    prefWidth="100" sortable="false"/>
+            </columns>
+            <placeholder>
+                <Label text="No hay clientes registrados" styleClass="label-muted"/>
+            </placeholder>
+        </TableView>
+    </VBox>
+</VBox>

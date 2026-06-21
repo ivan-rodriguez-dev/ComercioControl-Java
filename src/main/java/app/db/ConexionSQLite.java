@@ -9,6 +9,11 @@ public class ConexionSQLite {
     private static final String URL = "jdbc:sqlite:comerciocontrol.db";
 
     public static Connection conectar() throws SQLException {
-        return DriverManager.getConnection(URL);
+        Connection conn = DriverManager.getConnection(URL);
+        // Habilitar foreign keys en cada conexión
+        try (var stmt = conn.createStatement()) {
+            stmt.execute("PRAGMA foreign_keys = ON");
+        }
+        return conn;
     }
 }

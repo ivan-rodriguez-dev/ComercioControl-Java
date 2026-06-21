@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="app.controller.UsuariosController"
+      styleClass="bg-app" spacing="0">
+    <padding><Insets top="28" left="28" right="28" bottom="28"/></padding>
+
+    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 16 0;">
+        <Label text="Gestión de Usuarios" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+        <Button text="+ Nuevo usuario" styleClass="btn-primary"
+                prefHeight="36" onAction="#abrirFormNuevo"/>
+    </HBox>
+
+    <VBox styleClass="card" VBox.vgrow="ALWAYS" spacing="0">
+        <TableView fx:id="tablaUsuarios" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colNombre"  text="Nombre completo" prefWidth="200"/>
+                <TableColumn fx:id="colUsuario" text="Usuario (login)"  prefWidth="130"/>
+                <TableColumn fx:id="colCedula"  text="Cédula"          prefWidth="120"/>
+                <TableColumn fx:id="colRol"     text="Rol"             prefWidth="120"/>
+                <TableColumn fx:id="colActivo"  text="Estado"          prefWidth="90"/>
+                <TableColumn fx:id="colAccion"  text="Acciones"        prefWidth="100" sortable="false"/>
+            </columns>
+            <placeholder>
+                <Label text="No hay usuarios registrados" styleClass="label-muted"/>
+            </placeholder>
+        </TableView>
+    </VBox>
+</VBox>

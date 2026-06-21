@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="app.controller.CajaController"
+      styleClass="bg-app" spacing="0">
+    <padding><Insets top="28" left="28" right="28" bottom="28"/></padding>
+
+    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 20 0;">
+        <Label text="Caja" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+        <Label fx:id="lblHeaderInfo" styleClass="header-info"/>
+    </HBox>
+
+    <!-- Panel estado caja + acciones -->
+    <HBox spacing="14" style="-fx-padding: 0 0 20 0;">
+        <!-- Estado actual -->
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="6">
+            <Label text="Estado de caja" styleClass="stat-label"/>
+            <Label fx:id="lblEstadoCaja" text="Sin apertura" styleClass="stat-value"
+                   style="-fx-text-fill: #94a3b8;"/>
+            <Label fx:id="lblFechaCaja" text="" styleClass="stat-sub"/>
+        </VBox>
+        <!-- Ventas del día -->
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="6">
+            <Label text="Ventas del día" styleClass="stat-label"/>
+            <Label fx:id="lblVentasDia" text="0" styleClass="stat-value-green"/>
+            <Label fx:id="lblTransacciones" text="0 transacciones" styleClass="stat-sub"/>
+        </VBox>
+        <!-- Monto apertura -->
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="6">
+            <Label text="Monto apertura" styleClass="stat-label"/>
+            <Label fx:id="lblMontApertura" text="0" styleClass="stat-value"/>
+            <Label text="Efectivo inicial" styleClass="stat-sub"/>
+        </VBox>
+        <!-- Diferencia -->
+        <VBox styleClass="stat-card" HBox.hgrow="ALWAYS" spacing="6">
+            <Label text="Diferencia cierre" styleClass="stat-label"/>
+            <Label fx:id="lblDiferencia" text="—" styleClass="stat-value"/>
+            <Label fx:id="lblDiferenciaSub" text="Al cerrar caja" styleClass="stat-sub"/>
+        </VBox>
+    </HBox>
+
+    <!-- Contenido principal: panel acción + historial -->
+    <HBox spacing="14" VBox.vgrow="ALWAYS">
+
+        <!-- Panel de acción -->
+        <VBox styleClass="card" prefWidth="340" spacing="16">
+            <Label text="OPERACIÓN DE CAJA" styleClass="card-title"/>
+
+            <!-- Apertura -->
+            <VBox fx:id="panelApertura" spacing="12">
+                <Label text="Apertura de caja" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                <VBox spacing="4">
+                    <Label text="Monto inicial (efectivo en caja)" styleClass="form-label"/>
+                    <TextField fx:id="txtMontoApertura" styleClass="text-field-custom"
+                               promptText="0" prefHeight="40"
+                               style="-fx-font-size: 15px;"/>
+                </VBox>
+                <Button text="Abrir caja →" styleClass="btn-primary"
+                        maxWidth="Infinity" prefHeight="44"
+                        style="-fx-font-size: 14px;"
+                        onAction="#abrirCaja"/>
+            </VBox>
+
+            <!-- Cierre -->
+            <VBox fx:id="panelCierre" spacing="12" visible="false" managed="false">
+                <Label text="Cierre de caja" style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                <VBox spacing="4">
+                    <Label text="Efectivo contado en caja" styleClass="form-label"/>
+                    <TextField fx:id="txtMontoCierre" styleClass="text-field-custom"
+                               promptText="0" prefHeight="40"
+                               style="-fx-font-size: 15px;"
+                               onKeyReleased="#calcularDiferencia"/>
+                </VBox>
+                <HBox spacing="8" alignment="CENTER_LEFT"
+                      style="-fx-background-color: #f8fafc; -fx-background-radius: 8; -fx-padding: 10 14;">
+                    <Label text="Ventas registradas:" styleClass="label-muted" HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblVentasCierre" text="0"
+                           style="-fx-font-weight: bold; -fx-text-fill: #22c55e;"/>
+                </HBox>
+                <HBox spacing="8" alignment="CENTER_LEFT"
+                      style="-fx-background-color: #f8fafc; -fx-background-radius: 8; -fx-padding: 10 14;">
+                    <Label text="Diferencia:" styleClass="label-muted" HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblDiferenciaPreview" text="—"
+                           style="-fx-font-weight: bold; -fx-text-fill: #64748b;"/>
+                </HBox>
+                <VBox spacing="4">
+                    <Label text="Observación (opcional)" styleClass="form-label"/>
+                    <TextArea fx:id="txtObservacion" prefHeight="70" styleClass="text-field-custom"
+                              style="-fx-font-size: 12px;" wrapText="true"/>
+                </VBox>
+                <Button text="Cerrar caja ✓" styleClass="btn-primary"
+                        maxWidth="Infinity" prefHeight="44"
+                        style="-fx-font-size: 14px; -fx-background-color: #22c55e;"
+                        onAction="#cerrarCaja"/>
+            </VBox>
+
+            <VBox VBox.vgrow="ALWAYS"/>
+
+            <!-- Botón recargar -->
+            <Button text="↺  Actualizar" styleClass="btn-secondary"
+                    maxWidth="Infinity" prefHeight="36" onAction="#recargar"/>
+        </VBox>
+
+        <!-- Historial -->
+        <VBox styleClass="card" HBox.hgrow="ALWAYS" spacing="10">
+            <Label text="HISTORIAL DE CAJA" styleClass="card-title"/>
+            <TableView fx:id="tablaHistorial" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colFecha"      text="Fecha"       prefWidth="100"/>
+                    <TableColumn fx:id="colApertura"   text="Apertura"    prefWidth="110"/>
+                    <TableColumn fx:id="colVentas"     text="Ventas"      prefWidth="110"/>
+                    <TableColumn fx:id="colCierre"     text="Cierre"      prefWidth="110"/>
+                    <TableColumn fx:id="colDiferencia" text="Diferencia"  prefWidth="110"/>
+                    <TableColumn fx:id="colEstado"     text="Estado"      prefWidth="90"/>
+                    <TableColumn fx:id="colUsuario"    text="Usuario"     prefWidth="110"/>
+                </columns>
+                <placeholder>
+                    <Label text="Sin registros de caja" styleClass="label-muted"/>
+                </placeholder>
+            </TableView>
+        </VBox>
+    </HBox>
+</VBox>
