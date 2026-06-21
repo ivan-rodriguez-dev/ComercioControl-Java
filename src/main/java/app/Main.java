@@ -32,11 +32,14 @@ public class Main extends Application {
         stage.show();
     }
 
-    /** Carga el ícono de la aplicación si está disponible en /img/icono.png. */
+    /** Carga el ícono de la aplicación en todos los tamaños disponibles (ventana y barra de tareas). */
     private static void cargarIcono(Stage stage) {
-        try (var is = Main.class.getResourceAsStream("/img/icono.png")) {
-            if (is != null) stage.getIcons().add(new javafx.scene.image.Image(is));
-        } catch (Exception ignored) {}
+        String[] rutas = {"/img/icono-16.png", "/img/icono-32.png", "/img/icono-48.png", "/img/icono.png"};
+        for (String ruta : rutas) {
+            try (var is = Main.class.getResourceAsStream(ruta)) {
+                if (is != null) stage.getIcons().add(new javafx.scene.image.Image(is));
+            } catch (Exception ignored) {}
+        }
     }
 
     public static void mostrarLogin(Stage stage) {

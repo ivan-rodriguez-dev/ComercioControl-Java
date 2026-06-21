@@ -1,9 +1,0 @@
-Coloca aquí el ícono principal de la aplicación con el nombre:
-
-    icono.png   (recomendado: PNG cuadrado, 256x256 px o 512x512 px)
-
-Al iniciar, la app lo usará automáticamente como ícono de la ventana y la
-barra de tareas (ver app.Main#cargarIcono).
-
-Para el instalador/ejecutable (.exe) con jpackage se necesita además un
-archivo .ico (ver instrucciones en el README del proyecto).
