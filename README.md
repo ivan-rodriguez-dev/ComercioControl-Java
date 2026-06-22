@@ -117,3 +117,8 @@ Para distribuir la app en Windows con **jpackage** (incluido en el JDK):
 - Las contraseñas se almacenan con hash **MD5** (entorno local de tienda). Para mayor
   seguridad se recomienda migrar a SHA-256 con sal o BCrypt.
 - Los recibos PDF generados se guardan en `recibos/` (ignorado por git).
+
+## 📄 Licencia
+
+Software propietario. © 2026 Iván Rodríguez. Todos los derechos reservados.
+Gratis para usar; **prohibido revender, redistribuir o modificar**. Ver [LICENSE](LICENSE).

@@ -1,21 +1,69 @@
-MIT License
+ComercioControl — Licencia de Uso (EULA)
+Copyright (c) 2026 Iván Rodríguez. Todos los derechos reservados.
 
-Copyright (c) 2026 Iván Rodriguez
+Lea atentamente esta licencia antes de instalar o usar el Software. Al instalar
+o usar el Software, usted acepta quedar obligado por estos términos.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+1. DEFINICIONES
+   "El Software" es la aplicación ComercioControl, en su forma ejecutable (por
+   ejemplo, .exe) o en cualquier otra forma distribuida por el Autor, incluyendo
+   sus actualizaciones, archivos, recursos y documentación.
+   "El Autor" es Iván Rodríguez, titular de todos los derechos sobre el Software.
+   "Usted" es la persona o entidad que instala o usa el Software.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+2. CONCESIÓN DE LICENCIA
+   El Autor le concede una licencia gratuita, mundial, no exclusiva, revocable e
+   intransferible para instalar y usar el Software con el fin de gestionar su
+   propio negocio, tanto para fines personales como comerciales.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+3. RESTRICCIONES
+   Usted NO podrá:
+   a) Vender, revender, alquilar, prestar, sublicenciar ni distribuir el Software,
+      total o parcialmente, a terceros, ni cobrar por él.
+   b) Publicar el Software o ponerlo a disposición de terceros para su descarga.
+   c) Realizar ingeniería inversa, descompilar, desensamblar ni intentar derivar
+      el código fuente del Software, salvo en la medida en que la ley lo permita
+      expresamente.
+   d) Modificar, adaptar, traducir o crear obras derivadas del Software.
+   e) Eliminar, ocultar o alterar los avisos de derechos de autor, marcas o
+      cualquier identificación del Autor presentes en el Software.
+
+4. PROPIEDAD
+   El Software es propiedad del Autor y está protegido por las leyes de derechos
+   de autor y tratados internacionales. Esta licencia le otorga un derecho de uso,
+   no la propiedad del Software. El Autor se reserva todos los derechos no
+   concedidos expresamente en esta licencia.
+
+5. VERSIONES Y FUNCIONES DE PAGO
+   El Autor puede ofrecer versiones, módulos o funciones adicionales bajo
+   condiciones comerciales distintas. Esta licencia gratuita no otorga ningún
+   derecho sobre dichas versiones o funciones de pago.
+
+6. SIN GARANTÍA
+   EL SOFTWARE SE PROPORCIONA "TAL CUAL" Y "SEGÚN DISPONIBILIDAD", SIN GARANTÍA DE
+   NINGÚN TIPO, EXPRESA O IMPLÍCITA, INCLUYENDO ENTRE OTRAS LAS DE COMERCIABILIDAD,
+   IDONEIDAD PARA UN FIN DETERMINADO Y NO INFRACCIÓN. EL AUTOR NO GARANTIZA QUE EL
+   SOFTWARE ESTÉ LIBRE DE ERRORES NI QUE FUNCIONE SIN INTERRUPCIONES.
+
+7. LIMITACIÓN DE RESPONSABILIDAD
+   EN NINGÚN CASO EL AUTOR SERÁ RESPONSABLE POR DAÑOS DIRECTOS, INDIRECTOS,
+   INCIDENTALES, ESPECIALES O CONSECUENTES (INCLUYENDO, ENTRE OTROS, PÉRDIDA DE
+   DATOS, INTERRUPCIÓN DEL NEGOCIO O PÉRDIDAS ECONÓMICAS) DERIVADOS DEL USO O DE LA
+   IMPOSIBILIDAD DE USO DEL SOFTWARE, AUN CUANDO SE HAYA ADVERTIDO DE LA
+   POSIBILIDAD DE TALES DAÑOS.
+
+8. RESPALDO DE DATOS
+   Usted es el único responsable de respaldar la información de su negocio. El
+   Autor no se responsabiliza por la pérdida de datos.
+
+9. TERMINACIÓN
+   Esta licencia termina automáticamente si usted incumple cualquiera de sus
+   condiciones. Al terminar, deberá cesar todo uso del Software y eliminar todas
+   sus copias.
+
+10. LEY APLICABLE
+    Esta licencia se rige e interpreta conforme a las leyes de la República de
+    Colombia.
+
+Para licencias comerciales, distribución autorizada o usos no contemplados aquí,
+contacte al Autor: [agrega aquí tu correo de contacto]
