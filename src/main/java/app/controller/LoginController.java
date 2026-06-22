@@ -3,6 +3,7 @@ package app.controller;
 import app.Main;
 import app.dao.UsuarioDAO;
 import app.model.Usuario;
+import app.util.ConfigNegocio;
 import app.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,9 +12,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 public class LoginController {
 
@@ -21,6 +27,10 @@ public class LoginController {
     @FXML private PasswordField txtPassword;
     @FXML private Label lblError;
     @FXML private Button btnIngresar;
+    @FXML private Label lblNombreNegocioLogin;
+    @FXML private Label lblSloganLogin;
+    @FXML private ImageView imgLogoLogin;
+    @FXML private SVGPath svgLogoLogin;
 
     private final UsuarioDAO usuarioDAO = new UsuarioDAO();
     private Stage stage;
@@ -31,12 +41,28 @@ public class LoginController {
 
     @FXML
     public void initialize() {
+        aplicarBranding();
         txtPassword.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) onIngresar();
         });
         txtUsuario.setOnKeyPressed(e -> {
             if (e.getCode() == KeyCode.ENTER) txtPassword.requestFocus();
         });
+    }
+
+    private void aplicarBranding() {
+        ConfigNegocio cfg = ConfigNegocio.getInstance();
+        cfg.recargar();
+        lblNombreNegocioLogin.setText(cfg.getNombre());
+        lblSloganLogin.setText(cfg.getSlogan());
+        boolean tieneLogo = cfg.tieneLogo();
+        if (tieneLogo) {
+            imgLogoLogin.setImage(new Image(new File(cfg.getLogoPath()).toURI().toString()));
+        }
+        imgLogoLogin.setVisible(tieneLogo);
+        imgLogoLogin.setManaged(tieneLogo);
+        svgLogoLogin.setVisible(!tieneLogo);
+        svgLogoLogin.setManaged(!tieneLogo);
     }
 
     @FXML
@@ -85,7 +111,8 @@ public class LoginController {
             Scene scene = new Scene(root);
             Stage s = stage != null ? stage : (Stage) btnIngresar.getScene().getWindow();
             s.setScene(scene);
-            s.setTitle("ComercioControl — " + SessionManager.getInstance().getUsuarioActual().getNombre());
+            s.setTitle(ConfigNegocio.getInstance().getNombre()
+                    + " — " + SessionManager.getInstance().getUsuarioActual().getNombre());
             s.setResizable(true);
             s.setMaximized(true);
         } catch (Exception e) {

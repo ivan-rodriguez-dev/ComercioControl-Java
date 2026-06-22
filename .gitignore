@@ -44,6 +44,9 @@ build/
 # Recibos PDF generados en tiempo de ejecución
 /recibos/
 
+# Datos de personalización del negocio (logo, etc.)
+/config/
+
 # Sistema
 
 # Compilados / build

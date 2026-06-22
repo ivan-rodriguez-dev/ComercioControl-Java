@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+
+<ScrollPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="app.controller.ConfiguracionController"
+            styleClass="bg-app" fitToWidth="true"
+            hbarPolicy="NEVER" style="-fx-background-color: #f1f0ec;">
+
+    <VBox styleClass="bg-app" spacing="0">
+        <padding><Insets top="28" left="28" right="28" bottom="28"/></padding>
+
+        <Label text="Mi Negocio" styleClass="page-title" style="-fx-padding: 0 0 16 0;"/>
+
+        <!-- Perfil grande del negocio -->
+        <VBox styleClass="card" style="-fx-padding: 28;">
+            <HBox spacing="24" alignment="CENTER_LEFT">
+                <StackPane minWidth="120" minHeight="120" maxWidth="120" maxHeight="120"
+                           style="-fx-background-color: #eef2f7; -fx-background-radius: 18; -fx-border-color: #e2e8f0; -fx-border-radius: 18;">
+                    <SVGPath fx:id="svgLogoGrande" styleClass="logo-grande-icon"
+                             content="M21.9 8.89l-1.05-4.37c-.22-.9-1-1.52-1.91-1.52H5.05c-.9 0-1.69.63-1.9 1.52L2.1 8.89c-.24 1.02-.02 2.06.62 2.88.08.11.19.19.28.29V19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-6.94c.09-.09.2-.18.28-.28.64-.82.87-1.87.62-2.89zM18.91 4.99l1.05 4.37c.1.42.01.84-.25 1.17-.14.18-.44.48-.94.48-.61 0-1.14-.49-1.21-1.14L16.98 5l1.93-.01zM13 5h1.96l.54 4.52c.05.39-.07.78-.33 1.07-.22.26-.54.41-.95.41-.67 0-1.22-.59-1.22-1.31V5zM8.49 9.52L9.04 5H11v4.69c0 .72-.55 1.31-1.29 1.31-.34 0-.65-.15-.89-.41-.25-.29-.37-.68-.33-1.07zm-4.45-.16L5.09 5h1.93l-.57 4.86c-.08.65-.6 1.14-1.21 1.14-.49 0-.8-.3-.93-.48-.27-.32-.36-.75-.27-1.16zM6 19v-6.03c.08.01.15.03.23.03.87 0 1.66-.36 2.24-.95.6.6 1.4.95 2.31.95.87 0 1.65-.36 2.23-.93.59.57 1.39.93 2.29.93.84 0 1.64-.35 2.24-.95.58.59 1.37.95 2.24.95.08 0 .15-.02.23-.03V19H6z"/>
+                    <ImageView fx:id="imgLogoGrande" fitWidth="108" fitHeight="108"
+                               preserveRatio="true" visible="false" managed="false"/>
+                </StackPane>
+
+                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                    <Label fx:id="lblNombreNegocio" text="ComercioControl"
+                           style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"
+                           wrapText="true"/>
+                    <Label fx:id="lblSloganNegocio" text="Tienda Retail" styleClass="label-muted"
+                           style="-fx-font-size: 14px;"/>
+                    <Separator style="-fx-padding: 10 0 6 0;"/>
+                    <Label text="ADMINISTRADOR" styleClass="card-title"/>
+                    <Label fx:id="lblAdminNombre" text="—"
+                           style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+                    <Label fx:id="lblAdminUsuario" text="" styleClass="label-muted"/>
+                </VBox>
+            </HBox>
+        </VBox>
+
+        <!-- Formulario de personalización -->
+        <VBox styleClass="card" spacing="14">
+            <VBox.margin><Insets top="16"/></VBox.margin>
+            <Label text="PERSONALIZACIÓN" styleClass="card-title"/>
+
+            <VBox spacing="4">
+                <Label text="Nombre del negocio *" styleClass="form-label"/>
+                <TextField fx:id="txtNombre" styleClass="text-field-custom" prefHeight="38"
+                           promptText="Ej: Minimarket La Esquina"/>
+            </VBox>
+
+            <VBox spacing="4">
+                <Label text="Eslogan / descripción" styleClass="form-label"/>
+                <TextField fx:id="txtSlogan" styleClass="text-field-custom" prefHeight="38"
+                           promptText="Ej: Tu tienda de confianza"/>
+            </VBox>
+
+            <VBox spacing="6">
+                <Label text="Logo del negocio" styleClass="form-label"/>
+                <HBox spacing="14" alignment="CENTER_LEFT">
+                    <StackPane minWidth="56" minHeight="56" maxWidth="56" maxHeight="56"
+                               style="-fx-background-color: #eef2f7; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10;">
+                        <ImageView fx:id="imgPreview" fitWidth="50" fitHeight="50" preserveRatio="true"/>
+                    </StackPane>
+                    <Button text="Seleccionar imagen..." styleClass="btn-secondary"
+                            prefHeight="36" onAction="#seleccionarLogo"/>
+                    <Label fx:id="lblArchivo" styleClass="label-muted"/>
+                </HBox>
+                <Label text="Recomendado: imagen cuadrada PNG o JPG (p. ej. 256×256)."
+                       styleClass="label-muted" style="-fx-font-size: 11px;"/>
+            </VBox>
+
+            <Label fx:id="lblMensaje" visible="false" managed="false" wrapText="true"
+                   style="-fx-font-size: 12px;"/>
+
+            <HBox alignment="CENTER_RIGHT" spacing="10">
+                <Button text="Quitar logo" styleClass="btn-secondary" prefHeight="40"
+                        onAction="#quitarLogo"/>
+                <Button text="Guardar cambios" styleClass="btn-primary" prefHeight="40"
+                        prefWidth="170" onAction="#guardar"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</ScrollPane>

@@ -150,6 +150,13 @@ public class InicializarDB {
                     ON DELETE RESTRICT ON UPDATE CASCADE
             )
         """);
+
+        stmt.executeUpdate("""
+            CREATE TABLE IF NOT EXISTS configuracion (
+                clave TEXT PRIMARY KEY,
+                valor TEXT
+            )
+        """);
     }
 
     private static void insertarUsuariosDefault(Statement stmt) throws SQLException {

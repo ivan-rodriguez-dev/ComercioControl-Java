@@ -2,15 +2,20 @@ package app.controller;
 
 import app.Main;
 import app.model.Usuario;
+import app.util.ConfigNegocio;
 import app.util.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
@@ -23,6 +28,12 @@ public class MainController {
     @FXML private Label lblIniciales;
     @FXML private Button btnAdminUsuarios;
     @FXML private Button btnAuditoria;
+    @FXML private Button btnConfiguracion;
+
+    @FXML private ImageView imgLogoNegocio;
+    @FXML private SVGPath svgLogoNegocio;
+    @FXML private Label lblTituloNegocio;
+    @FXML private Label lblSubtituloNegocio;
 
     @FXML private Button btnDashboard;
     @FXML private Button btnInventario;
@@ -46,17 +57,42 @@ public class MainController {
 
         navBotones = List.of(btnDashboard, btnInventario, btnVentas, btnClientes,
                 btnMovimientos, btnProveedores, btnCaja, btnReportes,
-                btnAdminUsuarios, btnAuditoria);
+                btnAdminUsuarios, btnAuditoria, btnConfiguracion);
 
         boolean esAdmin = SessionManager.getInstance().esAdministrador();
-        btnAdminUsuarios.setVisible(esAdmin);
-        btnAdminUsuarios.setManaged(esAdmin);
-        btnAuditoria.setVisible(esAdmin);
-        btnAuditoria.setManaged(esAdmin);
+        for (Button b : new Button[]{btnAdminUsuarios, btnAuditoria, btnConfiguracion}) {
+            b.setVisible(esAdmin);
+            b.setManaged(esAdmin);
+        }
 
         configurarPermisos(u != null ? u.getRol() : null);
+        aplicarBranding();
 
         mostrarDashboard();
+    }
+
+    /** Refresca el nombre, eslogan y logo del negocio en el sidebar y el título de la ventana. */
+    public void aplicarBranding() {
+        ConfigNegocio cfg = ConfigNegocio.getInstance();
+        cfg.recargar();
+
+        lblTituloNegocio.setText(cfg.getNombre());
+        lblSubtituloNegocio.setText(cfg.getSlogan());
+
+        boolean tieneLogo = cfg.tieneLogo();
+        if (tieneLogo) {
+            imgLogoNegocio.setImage(new Image(new File(cfg.getLogoPath()).toURI().toString()));
+        }
+        imgLogoNegocio.setVisible(tieneLogo);
+        imgLogoNegocio.setManaged(tieneLogo);
+        svgLogoNegocio.setVisible(!tieneLogo);
+        svgLogoNegocio.setManaged(!tieneLogo);
+
+        if (contenidoPrincipal.getScene() != null
+                && contenidoPrincipal.getScene().getWindow() instanceof Stage stage) {
+            Usuario u = SessionManager.getInstance().getUsuarioActual();
+            stage.setTitle(cfg.getNombre() + (u != null ? " — " + u.getNombre() : ""));
+        }
     }
 
     /**
@@ -106,10 +142,15 @@ public class MainController {
         if (SessionManager.getInstance().esAdministrador()) cargar("/fxml/auditoria.fxml", btnAuditoria);
     }
 
+    @FXML public void mostrarConfiguracion() {
+        if (SessionManager.getInstance().esAdministrador()) cargar("/fxml/configuracion.fxml", btnConfiguracion);
+    }
+
     private void cargar(String fxmlPath, Button botonActivo) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Node vista = loader.load();
+            if (loader.getController() instanceof ConfiguracionController cc) cc.setMainController(this);
             contenidoPrincipal.getChildren().setAll(vista);
 
             // Actualizar estilos del nav
