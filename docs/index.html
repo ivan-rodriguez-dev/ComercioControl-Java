@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ComercioControl — Punto de venta e inventario para tu tienda</title>
+<meta name="description" content="ComercioControl: software de punto de venta (POS) e inventario para comercios. Ventas, stock, caja, reportes y clientes. Versión gratuita disponible para Windows.">
+<meta property="og:title" content="ComercioControl — POS e inventario para tu tienda">
+<meta property="og:description" content="Gestiona ventas, inventario, caja y reportes. Versión gratuita para Windows, sin necesidad de instalar Java.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="img/icono.png">
+<style>
+  :root{
+    --navy:#1e3a5f; --navy-dark:#162d4a; --accent:#2563eb; --accent-hover:#1d4ed8;
+    --bg:#f1f0ec; --text:#1e293b; --muted:#64748b; --card:#fff; --border:#e2e8f0;
+    --green:#16a34a; --amber:#d97706;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:"Segoe UI",system-ui,-apple-system,Arial,sans-serif;color:var(--text);
+    background:var(--bg);line-height:1.6}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+  .btn{display:inline-block;padding:12px 22px;border-radius:9px;font-weight:600;font-size:15px;cursor:pointer;
+    transition:.15s;border:none}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:var(--accent-hover)}
+  .btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.35)}
+  .btn-ghost:hover{background:rgba(255,255,255,.12)}
+  .btn-outline{background:#fff;color:var(--text);border:1px solid var(--border)}
+  .btn-outline:hover{background:#f8fafc}
+
+  /* NAV */
+  header{position:sticky;top:0;z-index:50;background:rgba(30,58,95,.97);backdrop-filter:blur(6px)}
+  nav{display:flex;align-items:center;gap:16px;height:64px}
+  .brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:700;font-size:18px}
+  .brand img{width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.12);padding:3px}
+  .nav-links{margin-left:auto;display:flex;align-items:center;gap:26px}
+  .nav-links a{color:rgba(255,255,255,.85);font-size:15px}
+  .nav-links a:hover{color:#fff}
+  .nav-links .btn{margin-left:6px}
+  @media(max-width:720px){.nav-links a:not(.btn){display:none}}
+
+  /* HERO */
+  .hero{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-dark) 100%);color:#fff;
+    padding:72px 0 84px}
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  @media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:36px}}
+  .badge{display:inline-block;background:rgba(37,99,235,.25);color:#bfdbfe;font-size:13px;font-weight:600;
+    padding:5px 12px;border-radius:20px;margin-bottom:18px}
+  .hero h1{font-size:44px;line-height:1.12;font-weight:800;letter-spacing:-.5px}
+  @media(max-width:880px){.hero h1{font-size:34px}}
+  .hero p.lead{margin-top:16px;font-size:18px;color:rgba(255,255,255,.8);max-width:520px}
+  .hero-cta{margin-top:30px;display:flex;gap:14px;flex-wrap:wrap}
+  .hero-note{margin-top:16px;font-size:13px;color:rgba(255,255,255,.55)}
+
+  /* App mockup */
+  .mock{background:#fff;border-radius:14px;box-shadow:0 30px 60px rgba(0,0,0,.35);overflow:hidden;
+    display:flex;height:300px}
+  .mock-side{background:var(--navy);width:120px;padding:14px 10px;display:flex;flex-direction:column;gap:7px}
+  .mock-logo{display:flex;align-items:center;gap:6px;color:#fff;font-size:11px;font-weight:700;margin-bottom:8px}
+  .mock-logo span{width:18px;height:18px;background:rgba(255,255,255,.15);border-radius:5px;display:inline-block}
+  .mock-item{font-size:10px;color:rgba(255,255,255,.7);padding:6px 8px;border-radius:5px}
+  .mock-item.on{background:rgba(255,255,255,.18);color:#fff;font-weight:600}
+  .mock-main{flex:1;padding:16px;background:var(--bg)}
+  .mock-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px}
+  .mock-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .mock-card{background:#fff;border-radius:8px;padding:11px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+  .mock-card small{font-size:9px;color:var(--muted)}
+  .mock-card b{display:block;font-size:17px;margin-top:3px;color:var(--text)}
+  .mock-card b.g{color:var(--green)}
+  .mock-bar{height:7px;border-radius:4px;background:#dbeafe;margin-top:9px}
+  .mock-bar i{display:block;height:100%;border-radius:4px;background:var(--accent)}
+
+  /* SECTIONS */
+  section{padding:78px 0}
+  .sec-head{text-align:center;max-width:680px;margin:0 auto 48px}
+  .sec-head .kicker{color:var(--accent);font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.06em}
+  .sec-head h2{font-size:34px;font-weight:800;margin-top:8px;letter-spacing:-.5px}
+  @media(max-width:880px){.sec-head h2{font-size:27px}}
+  .sec-head p{color:var(--muted);font-size:17px;margin-top:12px}
+
+  /* FEATURES */
+  .features{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:880px){.features{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.features{grid-template-columns:1fr}}
+  .feature{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:24px}
+  .feature .ic{width:46px;height:46px;border-radius:11px;background:#eff6ff;display:flex;align-items:center;
+    justify-content:center;margin-bottom:15px}
+  .feature .ic svg{width:24px;height:24px;fill:var(--accent)}
+  .feature h3{font-size:17px;font-weight:700}
+  .feature p{color:var(--muted);font-size:14.5px;margin-top:7px}
+
+  /* PRICING */
+  .pricing{background:#fff}
+  .plans{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:840px;margin:0 auto}
+  @media(max-width:760px){.plans{grid-template-columns:1fr}}
+  .plan{border:1px solid var(--border);border-radius:16px;padding:30px}
+  .plan.pro{border:2px solid var(--accent);position:relative}
+  .plan .tag{position:absolute;top:-13px;left:30px;background:var(--accent);color:#fff;font-size:12px;
+    font-weight:700;padding:4px 12px;border-radius:20px}
+  .plan h3{font-size:22px;font-weight:800}
+  .plan .price{font-size:38px;font-weight:800;margin:10px 0 4px}
+  .plan .price small{font-size:15px;font-weight:600;color:var(--muted)}
+  .plan ul{list-style:none;margin:20px 0 26px}
+  .plan li{display:flex;gap:10px;align-items:flex-start;padding:7px 0;font-size:15px;color:var(--text)}
+  .plan li svg{width:18px;height:18px;flex:0 0 18px;margin-top:3px}
+  .plan li.no{color:var(--muted)}
+  .check{fill:var(--green)} .cross{fill:#cbd5e1}
+  .plan .btn{width:100%;text-align:center}
+
+  /* DOWNLOAD */
+  .download{background:linear-gradient(160deg,var(--navy) 0%,var(--navy-dark) 100%);color:#fff;text-align:center}
+  .download h2{font-size:34px;font-weight:800}
+  .download p{color:rgba(255,255,255,.8);font-size:18px;margin:14px auto 28px;max-width:560px}
+  .dl-meta{margin-top:18px;font-size:13px;color:rgba(255,255,255,.55)}
+
+  /* FOOTER */
+  footer{background:var(--navy-dark);color:rgba(255,255,255,.7);padding:34px 0;font-size:14px}
+  .foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;align-items:center}
+  .foot a{color:#bfdbfe}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a href="#inicio" class="brand"><img src="img/icono.png" alt="ComercioControl">ComercioControl</a>
+      <div class="nav-links">
+        <a href="#caracteristicas">Características</a>
+        <a href="#precios">Precios</a>
+        <a href="#descargar" class="btn btn-primary">Descargar gratis</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="inicio" style="padding-top:72px">
+  <div class="wrap hero-grid">
+    <div>
+      <span class="badge">★ Versión gratuita disponible</span>
+      <h1>Gestiona tu tienda sin complicaciones</h1>
+      <p class="lead">ComercioControl es el punto de venta e inventario para tu negocio:
+        registra ventas, controla el stock, maneja la caja y mira tus reportes — todo
+        en una sola aplicación para Windows.</p>
+      <div class="hero-cta">
+        <a href="#descargar" class="btn btn-primary">Descargar gratis</a>
+        <a href="#caracteristicas" class="btn btn-ghost">Ver características</a>
+      </div>
+      <p class="hero-note">Para Windows · No necesitas instalar Java · Sin conexión a internet</p>
+    </div>
+    <div>
+      <div class="mock">
+        <div class="mock-side">
+          <div class="mock-logo"><span></span>Comercio</div>
+          <div class="mock-item on">Dashboard</div>
+          <div class="mock-item">Inventario</div>
+          <div class="mock-item">Ventas (POS)</div>
+          <div class="mock-item">Clientes</div>
+          <div class="mock-item">Caja</div>
+          <div class="mock-item">Reportes</div>
+        </div>
+        <div class="mock-main">
+          <div class="mock-title">Resumen de hoy</div>
+          <div class="mock-cards">
+            <div class="mock-card"><small>Ventas del día</small><b class="g">$1.904.000</b></div>
+            <div class="mock-card"><small>Transacciones</small><b>32</b></div>
+            <div class="mock-card"><small>Productos</small><b>248</b></div>
+            <div class="mock-card"><small>Stock crítico</small><b style="color:#ef4444">5</b></div>
+          </div>
+          <div class="mock-card" style="margin-top:10px">
+            <small>Ventas de la semana</small>
+            <div class="mock-bar"><i style="width:80%"></i></div>
+            <div class="mock-bar" style="margin-top:6px"><i style="width:55%"></i></div>
+            <div class="mock-bar" style="margin-top:6px"><i style="width:68%"></i></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="caracteristicas">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Todo lo que tu tienda necesita</div>
+      <h2>Una sola herramienta para vender y controlar</h2>
+      <p>Pensada para tiendas, minimarkets y comercios al detal.</p>
+    </div>
+    <div class="features">
+      <div class="feature">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg></div>
+        <h3>Punto de venta (POS)</h3>
+        <p>Cobra rápido con carrito, descuentos e IVA. Compatible con lector de código de barras.</p>
+      </div>
+      <div class="feature">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M20 2H4c-1 0-2 .9-2 2v3.01c0 .72.43 1.34 1 1.69V20c0 1.1 1.1 2 2 2h14c.9 0 2-.9 2-2V8.7c.57-.35 1-.97 1-1.69V4c0-1.1-1-2-2-2zm-5 12H9v-2h6v2zm5-7H4V4h16v3z"/></svg></div>
+        <h3>Control de inventario</h3>
+        <p>Productos, categorías, stock mínimo y alertas automáticas de stock crítico.</p>
+      </div>
+      <div class="feature">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M5 9.2h3V19H5V9.2zM10.6 5h2.8v14h-2.8V5zm5.6 8H19v6h-2.8v-6z"/></svg></div>
+        <h3>Reportes y estadísticas</h3>
+        <p>Ventas por período, productos más vendidos y valor del inventario. Exporta a PDF y Excel.</p>
+      </div>
+      <div class="feature">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg></div>
+        <h3>Cierre de caja</h3>
+        <p>Apertura y cierre diario con cálculo automático de la diferencia de efectivo.</p>
+      </div>
+      <div class="feature">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+        <h3>Clientes y proveedores</h3>
+        <p>Registra tus clientes y proveedores, y asócialos a tus ventas y productos.</p>
+      </div>
+      <div class="feature">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg></div>
+        <h3>Recibos y roles</h3>
+        <p>Genera recibos en PDF y controla el acceso por rol (administrador, vendedor, bodeguero).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing" id="precios">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Planes</div>
+      <h2>Empieza gratis, crece cuando quieras</h2>
+      <p>Prueba todo lo esencial sin pagar. Pásate a Pro cuando tu negocio lo necesite.</p>
+    </div>
+    <div class="plans">
+      <div class="plan">
+        <h3>Lite</h3>
+        <div class="price">Gratis</div>
+        <div style="color:var(--muted);font-size:14px">Ideal para empezar</div>
+        <ul>
+          <li><svg class="check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>POS, inventario, clientes y caja</li>
+          <li><svg class="check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Hasta 100 productos</li>
+          <li><svg class="check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>1 usuario</li>
+          <li class="no"><svg class="cross" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>Exportar reportes (PDF/Excel)</li>
+          <li class="no"><svg class="cross" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>Personalizar con tu logo</li>
+        </ul>
+        <a href="#descargar" class="btn btn-outline">Descargar gratis</a>
+      </div>
+      <div class="plan pro">
+        <span class="tag">Recomendado</span>
+        <h3>Pro</h3>
+        <div class="price">Licencia única <small>· consultar</small></div>
+        <div style="color:var(--muted);font-size:14px">Para tu negocio en serio</div>
+        <ul>
+          <li><svg class="check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Todo lo de Lite, sin límites</li>
+          <li><svg class="check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Productos y usuarios ilimitados</li>
+          <li><svg class="check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Exportar a PDF y Excel</li>
+          <li><svg class="check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Personalización con nombre y logo</li>
+          <li><svg class="check" viewBox="0 0 24 24"><path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>Recibos sin marca de agua</li>
+        </ul>
+        <a href="mailto:ivanrodriguezbusiness15@gmail.com?subject=Quiero%20ComercioControl%20Pro" class="btn btn-primary">Contactar para comprar</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD -->
+<section class="download" id="descargar">
+  <div class="wrap">
+    <h2>Descarga ComercioControl gratis</h2>
+    <p>Instálalo en minutos. No necesitas tener Java ni conexión a internet para usarlo.</p>
+    <a href="https://github.com/JuanMa3132/Comercio-ControlV1/releases/latest" class="btn btn-primary" style="font-size:17px;padding:14px 30px">⬇ Descargar para Windows</a>
+    <p class="dl-meta">Windows 10/11 (64 bits) · Instalador de ~70 MB</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>© 2026 ComercioControl · Iván Rodríguez. Todos los derechos reservados.</div>
+    <div>Contacto: <a href="mailto:ivanrodriguezbusiness15@gmail.com">ivanrodriguezbusiness15@gmail.com</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
