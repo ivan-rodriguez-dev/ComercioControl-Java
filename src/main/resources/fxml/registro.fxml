@@ -62,7 +62,7 @@
         <VBox VBox.vgrow="ALWAYS"/>
 
         <VBox spacing="4" style="-fx-padding: 0;">
-            <Label text="v1.0.0 · SENA · 2026" styleClass="login-version"/>
+            <Label text="v1.0.0 · 2026" styleClass="login-version"/>
         </VBox>
     </VBox>
 
