@@ -4,7 +4,10 @@ import app.dao.ConfiguracionDAO;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import java.io.File;
+import java.io.FileInputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 /**
  * Determina la edición activa (LITE/PRO) y gestiona la activación de la licencia Pro.
@@ -72,6 +75,26 @@ public class LicenciaManager {
         dao.set(K_CLAVE, generarClave(t));
         recargar();
         return esPro();
+    }
+
+    /**
+     * Si el instalador dejó una activación pendiente (activacion.properties en la
+     * carpeta de datos), la aplica una sola vez y borra el archivo.
+     */
+    public void importarActivacionPendiente() {
+        File f = Rutas.archivo("activacion.properties");
+        if (!f.exists()) return;
+        try (FileInputStream in = new FileInputStream(f)) {
+            Properties p = new Properties();
+            p.load(in);
+            String t = p.getProperty("titular");
+            String c = p.getProperty("clave");
+            if (t != null && c != null && !t.isBlank() && !c.isBlank()) {
+                activar(t, c);
+            }
+        } catch (Exception ignored) {
+        }
+        f.delete();
     }
 
     /** Quita la activación Pro (vuelve a LITE). */

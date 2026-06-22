@@ -182,8 +182,7 @@ public class ConfiguracionController {
         String logoPathParam = null; // null = mantener el actual
         try {
             if (logoSeleccionado != null) {
-                File dir = new File("config");
-                if (!dir.exists()) dir.mkdirs();
+                File dir = app.util.Rutas.dir("config");
                 String ext = extension(logoSeleccionado.getName());
                 File dest = new File(dir, "logo_" + System.currentTimeMillis() + (ext.isEmpty() ? "" : "." + ext));
                 Files.copy(logoSeleccionado.toPath(), dest.toPath(), StandardCopyOption.REPLACE_EXISTING);

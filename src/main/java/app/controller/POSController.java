@@ -456,8 +456,7 @@ public class POSController {
 
     private void generarYAbrirRecibo(Venta venta, String clienteNombre, String cajeroNombre) {
         try {
-            java.io.File dir = new java.io.File("recibos");
-            if (!dir.exists()) dir.mkdirs();
+            java.io.File dir = app.util.Rutas.dir("recibos");
             String stamp = java.time.LocalDateTime.now()
                     .format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
             java.io.File destino = new java.io.File(dir, "recibo_" + venta.getId() + "_" + stamp + ".pdf");

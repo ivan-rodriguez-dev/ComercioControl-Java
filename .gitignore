@@ -47,6 +47,9 @@ build/
 # Datos de personalización del negocio (logo, etc.)
 /config/
 
+# Instalador compilado (se genera con Inno Setup)
+/installer/Output/
+
 # Sistema
 
 # Compilados / build

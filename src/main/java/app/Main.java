@@ -15,6 +15,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         InicializarDB.inicializar();
+        app.util.LicenciaManager.getInstance().importarActivacionPendiente();
 
         cargarIcono(stage);
 
