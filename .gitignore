@@ -50,6 +50,9 @@ build/
 # Instalador compilado (se genera con Inno Setup)
 /installer/Output/
 
+# Instalador copiado dentro de la web (se sube a Netlify, no a git)
+/docs/*.exe
+
 # Sistema
 
 # Compilados / build
