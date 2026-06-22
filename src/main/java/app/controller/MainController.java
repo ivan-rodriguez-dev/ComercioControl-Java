@@ -42,11 +42,11 @@ public class MainController {
             lblNombreUsuario.setText(u.getNombre());
             lblRolUsuario.setText(capitalize(u.getRol().name()));
             lblIniciales.setText(u.getIniciales());
-            btnAdminUsuarios.setText(u.getIniciales());
         }
 
         navBotones = List.of(btnDashboard, btnInventario, btnVentas, btnClientes,
-                btnMovimientos, btnProveedores, btnCaja, btnReportes);
+                btnMovimientos, btnProveedores, btnCaja, btnReportes,
+                btnAdminUsuarios, btnAuditoria);
 
         boolean esAdmin = SessionManager.getInstance().esAdministrador();
         btnAdminUsuarios.setVisible(esAdmin);
@@ -99,11 +99,11 @@ public class MainController {
     @FXML public void mostrarReportes()    { cargar("/fxml/reportes.fxml",     btnReportes); }
 
     @FXML public void gestionarUsuarios() {
-        if (SessionManager.getInstance().esAdministrador()) cargar("/fxml/usuarios.fxml", null);
+        if (SessionManager.getInstance().esAdministrador()) cargar("/fxml/usuarios.fxml", btnAdminUsuarios);
     }
 
     @FXML public void mostrarAuditoria() {
-        if (SessionManager.getInstance().esAdministrador()) cargar("/fxml/auditoria.fxml", null);
+        if (SessionManager.getInstance().esAdministrador()) cargar("/fxml/auditoria.fxml", btnAuditoria);
     }
 
     private void cargar(String fxmlPath, Button botonActivo) {

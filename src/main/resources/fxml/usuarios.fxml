@@ -8,8 +8,9 @@
       styleClass="bg-app" spacing="0">
     <padding><Insets top="28" left="28" right="28" bottom="28"/></padding>
 
-    <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 16 0;">
-        <Label text="Gestión de Usuarios" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+    <HBox alignment="CENTER_LEFT" spacing="12" style="-fx-padding: 0 0 16 0;">
+        <Label text="Gestión de Usuarios" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
         <Button text="+ Nuevo usuario" styleClass="btn-primary"
                 prefHeight="36" onAction="#abrirFormNuevo"/>
     </HBox>

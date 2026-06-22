@@ -11,7 +11,8 @@
 
     <!-- Header -->
     <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 16 0;">
-        <Label text="Reportes" styleClass="page-title" HBox.hgrow="ALWAYS"/>
+        <Label text="Reportes" styleClass="page-title"/>
+        <Region HBox.hgrow="ALWAYS"/>
         <Label fx:id="lblHeaderInfo" styleClass="header-info"/>
     </HBox>
 

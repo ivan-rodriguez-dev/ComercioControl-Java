@@ -88,7 +88,7 @@ public class UsuariosController {
                 btnEdit.setOnAction(e -> editarUsuario(getTableView().getItems().get(getIndex())));
                 btnPwd.setOnAction(e  -> cambiarPassword(getTableView().getItems().get(getIndex())));
             }
-            private final HBox box = new HBox(4, btnEdit, btnPwd);
+            private final HBox box = new HBox(8, btnEdit, btnPwd);
             { box.setAlignment(Pos.CENTER); }
             @Override protected void updateItem(Void v, boolean empty) {
                 super.updateItem(v, empty);

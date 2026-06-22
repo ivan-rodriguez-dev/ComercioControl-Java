@@ -165,7 +165,7 @@ public class InventarioController {
                 btnEdit.setOnAction(e -> editarProducto(getTableView().getItems().get(getIndex())));
                 btnDel.setOnAction(e -> eliminarProducto(getTableView().getItems().get(getIndex())));
             }
-            private final HBox box = new HBox(4, btnVer, btnEdit, btnDel);
+            private final HBox box = new HBox(8, btnVer, btnEdit, btnDel);
             { box.setAlignment(Pos.CENTER); }
 
             @Override protected void updateItem(Void v, boolean empty) {

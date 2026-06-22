@@ -109,7 +109,7 @@ public class ProveedoresController {
                 btnEdit.setOnAction(e -> editarProveedor(getTableView().getItems().get(getIndex())));
                 btnDel.setOnAction(e -> eliminarProveedor(getTableView().getItems().get(getIndex())));
             }
-            private final HBox box = new HBox(4, btnEdit, btnDel);
+            private final HBox box = new HBox(8, btnEdit, btnDel);
             { box.setAlignment(Pos.CENTER); }
             @Override protected void updateItem(Void v, boolean empty) {
                 super.updateItem(v, empty);

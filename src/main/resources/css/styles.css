@@ -274,7 +274,8 @@
 .table-view .table-row-cell {
     -fx-background-color: white;
     -fx-border-color: transparent transparent #f1f5f9 transparent;
-    -fx-padding: 2 0;
+    -fx-cell-size: 44px;
+    -fx-padding: 0;
 }
 .table-view .table-row-cell:selected {
     -fx-background-color: #eff6ff;
@@ -285,7 +286,8 @@
 .table-view .table-cell {
     -fx-font-size: 13px;
     -fx-text-fill: #374151;
-    -fx-padding: 8 8;
+    -fx-padding: 0 10;
+    -fx-alignment: CENTER_LEFT;
     -fx-border-color: transparent;
 }
 
