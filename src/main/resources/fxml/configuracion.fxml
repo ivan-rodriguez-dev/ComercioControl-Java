@@ -41,10 +41,31 @@
             </HBox>
         </VBox>
 
+        <!-- Licencia -->
+        <VBox styleClass="card" spacing="10">
+            <VBox.margin><Insets top="16"/></VBox.margin>
+            <Label text="LICENCIA" styleClass="card-title"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Edición actual:" styleClass="form-label"/>
+                <Label fx:id="lblEdicion" text="Lite"
+                       style="-fx-font-weight: bold; -fx-text-fill: #1e293b;"/>
+            </HBox>
+            <Label fx:id="lblTitular" styleClass="label-muted" visible="false" managed="false"/>
+            <HBox spacing="10">
+                <Button fx:id="btnActivarPro" text="Activar versión Pro" styleClass="btn-primary"
+                        prefHeight="36" onAction="#activarPro"/>
+                <Button fx:id="btnDesactivarPro" text="Desactivar Pro" styleClass="btn-secondary"
+                        prefHeight="36" onAction="#desactivarPro" visible="false" managed="false"/>
+            </HBox>
+        </VBox>
+
         <!-- Formulario de personalización -->
         <VBox styleClass="card" spacing="14">
             <VBox.margin><Insets top="16"/></VBox.margin>
             <Label text="PERSONALIZACIÓN" styleClass="card-title"/>
+            <Label fx:id="lblBloqueoPro" wrapText="true" visible="false" managed="false"
+                   text="La personalización del negocio está disponible en la versión Pro. Actívala arriba."
+                   style="-fx-background-color: #fef3c7; -fx-text-fill: #92400e; -fx-background-radius: 8; -fx-padding: 10 12; -fx-font-size: 12px;"/>
 
             <VBox spacing="4">
                 <Label text="Nombre del negocio *" styleClass="form-label"/>
@@ -65,7 +86,7 @@
                                style="-fx-background-color: #eef2f7; -fx-background-radius: 10; -fx-border-color: #e2e8f0; -fx-border-radius: 10;">
                         <ImageView fx:id="imgPreview" fitWidth="50" fitHeight="50" preserveRatio="true"/>
                     </StackPane>
-                    <Button text="Seleccionar imagen..." styleClass="btn-secondary"
+                    <Button fx:id="btnSeleccionarLogo" text="Seleccionar imagen..." styleClass="btn-secondary"
                             prefHeight="36" onAction="#seleccionarLogo"/>
                     <Label fx:id="lblArchivo" styleClass="label-muted"/>
                 </HBox>
@@ -77,9 +98,9 @@
                    style="-fx-font-size: 12px;"/>
 
             <HBox alignment="CENTER_RIGHT" spacing="10">
-                <Button text="Quitar logo" styleClass="btn-secondary" prefHeight="40"
+                <Button fx:id="btnQuitarLogo" text="Quitar logo" styleClass="btn-secondary" prefHeight="40"
                         onAction="#quitarLogo"/>
-                <Button text="Guardar cambios" styleClass="btn-primary" prefHeight="40"
+                <Button fx:id="btnGuardar" text="Guardar cambios" styleClass="btn-primary" prefHeight="40"
                         prefWidth="170" onAction="#guardar"/>
             </HBox>
         </VBox>

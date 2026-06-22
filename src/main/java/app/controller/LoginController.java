@@ -53,9 +53,9 @@ public class LoginController {
     private void aplicarBranding() {
         ConfigNegocio cfg = ConfigNegocio.getInstance();
         cfg.recargar();
-        lblNombreNegocioLogin.setText(cfg.getNombre());
-        lblSloganLogin.setText(cfg.getSlogan());
-        boolean tieneLogo = cfg.tieneLogo();
+        lblNombreNegocioLogin.setText(cfg.getNombreVisible());
+        lblSloganLogin.setText(cfg.getSloganVisible());
+        boolean tieneLogo = cfg.tieneLogoVisible();
         if (tieneLogo) {
             imgLogoLogin.setImage(new Image(new File(cfg.getLogoPath()).toURI().toString()));
         }

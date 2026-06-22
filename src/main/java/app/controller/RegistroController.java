@@ -3,6 +3,7 @@ package app.controller;
 import app.Main;
 import app.dao.UsuarioDAO;
 import app.model.Usuario;
+import app.util.LicenciaManager;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -119,6 +120,15 @@ public class RegistroController {
 
         if (usuarioEditar == null) {
             boolean esPrimero = usuarioDAO.listarTodos().isEmpty();
+
+            // La versión Lite solo permite 1 usuario (el primer admin siempre se permite)
+            if (!esPrimero && LicenciaManager.getInstance().esLite()
+                    && usuarioDAO.listarTodos().size() >= LicenciaManager.MAX_USUARIOS_LITE) {
+                mostrarError("La versión gratuita permite solo " + LicenciaManager.MAX_USUARIOS_LITE
+                        + " usuario. Activa la versión Pro (en «Mi Negocio») para agregar más.");
+                return;
+            }
+
             String rolElegido = esPrimero ? "administrador" : cbRol.getValue();
 
             String username = generarUsuarioUnico(nombres, apellidos);

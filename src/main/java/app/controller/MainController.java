@@ -76,10 +76,11 @@ public class MainController {
         ConfigNegocio cfg = ConfigNegocio.getInstance();
         cfg.recargar();
 
-        lblTituloNegocio.setText(cfg.getNombre());
-        lblSubtituloNegocio.setText(cfg.getSlogan());
+        String edicion = app.util.LicenciaManager.getInstance().esPro() ? "Pro" : "Lite";
+        lblTituloNegocio.setText(cfg.getNombreVisible());
+        lblSubtituloNegocio.setText(cfg.getSloganVisible() + "  ·  " + edicion);
 
-        boolean tieneLogo = cfg.tieneLogo();
+        boolean tieneLogo = cfg.tieneLogoVisible();
         if (tieneLogo) {
             imgLogoNegocio.setImage(new Image(new File(cfg.getLogoPath()).toURI().toString()));
         }
@@ -91,7 +92,7 @@ public class MainController {
         if (contenidoPrincipal.getScene() != null
                 && contenidoPrincipal.getScene().getWindow() instanceof Stage stage) {
             Usuario u = SessionManager.getInstance().getUsuarioActual();
-            stage.setTitle(cfg.getNombre() + (u != null ? " — " + u.getNombre() : ""));
+            stage.setTitle(cfg.getNombreVisible() + (u != null ? " — " + u.getNombre() : ""));
         }
     }
 

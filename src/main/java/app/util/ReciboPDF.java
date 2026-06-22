@@ -3,8 +3,12 @@ package app.util;
 import app.model.DetalleVenta;
 import app.model.Venta;
 import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.GrayColor;
+import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.File;
@@ -37,11 +41,27 @@ public class ReciboPDF {
         Rectangle pagina = new Rectangle(226, 600);
         Document doc = new Document(pagina, 14, 14, 14, 14);
         try (FileOutputStream fos = new FileOutputStream(destino)) {
-            PdfWriter.getInstance(doc, fos);
+            PdfWriter writer = PdfWriter.getInstance(doc, fos);
+            // En la edición gratuita (Lite) el recibo lleva marca de agua.
+            if (app.util.LicenciaManager.getInstance().esLite()) {
+                writer.setPageEvent(new MarcaAguaLite());
+            }
             doc.open();
             escribirContenido(doc, venta, clienteNombre, cajeroNombre);
             // Cerrar el documento antes de que se cierre el stream (iText vuelca el PDF al cerrar).
             doc.close();
+        }
+    }
+
+    /** Marca de agua diagonal para la edición gratuita (Lite). */
+    static class MarcaAguaLite extends PdfPageEventHelper {
+        @Override public void onEndPage(PdfWriter writer, Document doc) {
+            PdfContentByte cb = writer.getDirectContentUnder();
+            Rectangle size = doc.getPageSize();
+            Font f = new Font(Font.FontFamily.HELVETICA, 16, Font.BOLD, new GrayColor(0.88f));
+            ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
+                    new Phrase("ComercioControl Lite", f),
+                    size.getWidth() / 2, size.getHeight() / 2, 45);
         }
     }
 

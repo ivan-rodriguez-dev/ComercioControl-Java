@@ -2,12 +2,13 @@ package app.controller;
 
 import app.model.Usuario;
 import app.util.ConfigNegocio;
+import app.util.LicenciaManager;
 import app.util.SessionManager;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 
@@ -30,6 +31,15 @@ public class ConfiguracionController {
     @FXML private Label lblArchivo;
     @FXML private Label lblMensaje;
 
+    @FXML private Label lblEdicion;
+    @FXML private Label lblTitular;
+    @FXML private Label lblBloqueoPro;
+    @FXML private Button btnActivarPro;
+    @FXML private Button btnDesactivarPro;
+    @FXML private Button btnSeleccionarLogo;
+    @FXML private Button btnQuitarLogo;
+    @FXML private Button btnGuardar;
+
     private File logoSeleccionado;     // nuevo logo elegido en esta sesión (aún sin guardar)
     private boolean quitarLogoFlag;    // el usuario pidió quitar el logo
     private MainController mainController;
@@ -43,8 +53,8 @@ public class ConfiguracionController {
 
         txtNombre.setText(cfg.getNombre());
         txtSlogan.setText(cfg.getSlogan());
-        lblNombreNegocio.setText(cfg.getNombre());
-        lblSloganNegocio.setText(cfg.getSlogan());
+        lblNombreNegocio.setText(cfg.getNombreVisible());
+        lblSloganNegocio.setText(cfg.getSloganVisible());
         mostrarLogoActual();
 
         Usuario u = SessionManager.getInstance().getUsuarioActual();
@@ -52,6 +62,84 @@ public class ConfiguracionController {
             lblAdminNombre.setText(u.getNombre());
             lblAdminUsuario.setText("@" + u.getUsuario() + " · " + capitalize(u.getRol().name()));
         }
+
+        actualizarLicenciaUI();
+    }
+
+    private void actualizarLicenciaUI() {
+        LicenciaManager lic = LicenciaManager.getInstance();
+        lic.recargar();
+        boolean pro = lic.esPro();
+
+        lblEdicion.setText(pro ? "Pro" : "Lite (gratuita)");
+        lblEdicion.setStyle("-fx-font-weight: bold; -fx-text-fill: " + (pro ? "#16a34a" : "#64748b") + ";");
+
+        if (pro && lic.getTitular() != null) {
+            lblTitular.setText("Licencia a nombre de: " + lic.getTitular());
+            lblTitular.setVisible(true);  lblTitular.setManaged(true);
+        } else {
+            lblTitular.setVisible(false); lblTitular.setManaged(false);
+        }
+
+        btnActivarPro.setVisible(!pro);   btnActivarPro.setManaged(!pro);
+        btnDesactivarPro.setVisible(pro); btnDesactivarPro.setManaged(pro);
+
+        boolean bloqueado = !pro;
+        txtNombre.setDisable(bloqueado);
+        txtSlogan.setDisable(bloqueado);
+        btnSeleccionarLogo.setDisable(bloqueado);
+        btnQuitarLogo.setDisable(bloqueado);
+        btnGuardar.setDisable(bloqueado);
+        lblBloqueoPro.setVisible(bloqueado);
+        lblBloqueoPro.setManaged(bloqueado);
+    }
+
+    @FXML private void activarPro() {
+        Dialog<ButtonType> d = new Dialog<>();
+        d.setTitle("Activar versión Pro");
+        d.setHeaderText("Ingresa el titular y la clave de tu licencia.");
+        d.initOwner(txtNombre.getScene().getWindow());
+        d.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        TextField tfTitular = new TextField(txtNombre.getText().trim());
+        tfTitular.setPromptText("Titular de la licencia");
+        TextField tfClave = new TextField();
+        tfClave.setPromptText("CCPRO-XXXXX-XXXXX-XXXXX-XXXXX");
+        VBox box = new VBox(8, new Label("Titular:"), tfTitular, new Label("Clave:"), tfClave);
+        box.setStyle("-fx-padding: 12;");
+        d.getDialogPane().setContent(box);
+
+        d.showAndWait().ifPresent(bt -> {
+            if (bt != ButtonType.OK) return;
+            boolean ok = LicenciaManager.getInstance().activar(tfTitular.getText(), tfClave.getText());
+            if (ok) {
+                refrescarTrasLicencia();
+                mensaje("✓ ¡Versión Pro activada! Gracias por tu compra.", false);
+            } else {
+                mensaje("Clave inválida para ese titular. Verifica los datos.", true);
+            }
+        });
+    }
+
+    @FXML private void desactivarPro() {
+        Alert c = new Alert(Alert.AlertType.CONFIRMATION,
+                "¿Volver a la versión Lite?", ButtonType.OK, ButtonType.CANCEL);
+        c.setHeaderText("Desactivar Pro");
+        c.showAndWait().ifPresent(bt -> {
+            if (bt != ButtonType.OK) return;
+            LicenciaManager.getInstance().desactivar();
+            refrescarTrasLicencia();
+            mensaje("Se volvió a la versión Lite.", false);
+        });
+    }
+
+    private void refrescarTrasLicencia() {
+        actualizarLicenciaUI();
+        ConfigNegocio cfg = ConfigNegocio.getInstance();
+        lblNombreNegocio.setText(cfg.getNombreVisible());
+        lblSloganNegocio.setText(cfg.getSloganVisible());
+        mostrarLogoActual();
+        if (mainController != null) mainController.aplicarBranding();
     }
 
     @FXML private void seleccionarLogo() {
@@ -79,6 +167,10 @@ public class ConfiguracionController {
     }
 
     @FXML private void guardar() {
+        if (LicenciaManager.getInstance().esLite()) {
+            mensaje("La personalización está disponible en la versión Pro.", true);
+            return;
+        }
         String nombre = txtNombre.getText().trim();
         String slogan = txtSlogan.getText().trim();
 
@@ -121,7 +213,7 @@ public class ConfiguracionController {
 
     private void mostrarLogoActual() {
         ConfigNegocio cfg = ConfigNegocio.getInstance();
-        if (cfg.tieneLogo()) {
+        if (cfg.tieneLogoVisible()) {
             Image img = new Image(new File(cfg.getLogoPath()).toURI().toString());
             imgPreview.setImage(img);
             mostrarImagenGrande(img);

@@ -5,6 +5,7 @@ import app.dao.VentaDAO;
 import app.model.Producto;
 import app.model.Venta;
 import app.util.FormatUtil;
+import app.util.LicenciaManager;
 import app.util.SessionManager;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
@@ -523,7 +524,18 @@ public class ReportesController {
         return card;
     }
 
+    private boolean bloqueadoPorLicencia() {
+        if (LicenciaManager.getInstance().esPro()) return false;
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setTitle("Versión Pro");
+        a.setHeaderText("La exportación a PDF/Excel está disponible en la versión Pro.");
+        a.setContentText(LicenciaManager.MSG_PRO);
+        a.showAndWait();
+        return true;
+    }
+
     @FXML private void exportarPDF() {
+        if (bloqueadoPorLicencia()) return;
         FileChooser fc = new FileChooser();
         fc.setTitle("Guardar PDF");
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF", "*.pdf"));
@@ -585,6 +597,7 @@ public class ReportesController {
     }
 
     @FXML private void exportarExcel() {
+        if (bloqueadoPorLicencia()) return;
         FileChooser fc = new FileChooser();
         fc.setTitle("Guardar Excel");
         fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Excel", "*.xlsx"));

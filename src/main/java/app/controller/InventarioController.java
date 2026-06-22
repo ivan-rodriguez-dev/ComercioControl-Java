@@ -5,6 +5,7 @@ import app.dao.ProveedorDAO;
 import app.model.Producto;
 import app.model.Proveedor;
 import app.util.FormatUtil;
+import app.util.LicenciaManager;
 import app.util.SessionManager;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -276,7 +277,23 @@ public class InventarioController {
         });
     }
 
-    @FXML private void abrirFormNuevo() { mostrarFormulario(null); }
+    @FXML private void abrirFormNuevo() {
+        if (LicenciaManager.getInstance().esLite()
+                && todosLosProductos.size() >= LicenciaManager.MAX_PRODUCTOS_LITE) {
+            avisoPro("Llegaste al límite de " + LicenciaManager.MAX_PRODUCTOS_LITE
+                    + " productos de la versión gratuita.");
+            return;
+        }
+        mostrarFormulario(null);
+    }
+
+    private void avisoPro(String detalle) {
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setTitle("Versión Pro");
+        a.setHeaderText(detalle);
+        a.setContentText(LicenciaManager.MSG_PRO);
+        a.showAndWait();
+    }
 
     private void mostrarFormulario(Producto productoEditar) {
         boolean esNuevo = productoEditar == null;

@@ -42,6 +42,17 @@ public class ConfigNegocio {
         return logoPath != null && !logoPath.isBlank() && new File(logoPath).exists();
     }
 
+    // ── Valores "visibles": la personalización solo se aplica en la edición Pro ──
+    public String getNombreVisible() {
+        return LicenciaManager.getInstance().esPro() ? nombre : "ComercioControl";
+    }
+    public String getSloganVisible() {
+        return LicenciaManager.getInstance().esPro() ? slogan : "Tienda Retail";
+    }
+    public boolean tieneLogoVisible() {
+        return LicenciaManager.getInstance().esPro() && tieneLogo();
+    }
+
     public void guardar(String nombre, String slogan, String logoPath) {
         dao.set(K_NOMBRE, nombre);
         dao.set(K_SLOGAN, slogan);
