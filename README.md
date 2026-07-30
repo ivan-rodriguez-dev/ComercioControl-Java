@@ -92,6 +92,37 @@ src/main/resources/
 └── img/                      # Íconos de la app (icono.png + tamaños + icono.ico)
 ```
 
+## 🧱 Arquitectura por capas
+
+El proyecto sigue una arquitectura en capas con separación de responsabilidades:
+
+| Capa | Paquete | Responsabilidad |
+|------|---------|-----------------|
+| Presentación | `app.controller` + `resources/fxml` | Vistas FXML y controladores JavaFX; solo interacción con el usuario |
+| Dominio | `app.model` | Entidades del negocio con su estado y su comportamiento (p. ej. `Producto.getEstado()`) |
+| Acceso a datos | `app.dao` | Un DAO por entidad; encapsula todo el SQL (JDBC + `PreparedStatement`) |
+| Infraestructura | `app.db`, `app.util` | Conexión SQLite, creación del esquema, sesión, formato, recibos PDF y licencia |
+
+Ninguna vista ejecuta SQL: los controladores solo invocan métodos de los DAO, y los DAO son
+los únicos que conocen la base de datos.
+
+## 🧩 Módulos desarrollados
+
+| Módulo | Controlador | DAO | Entidad |
+|--------|-------------|-----|---------|
+| Autenticación y registro | `LoginController`, `RegistroController` | `UsuarioDAO` | `Usuario` |
+| Dashboard (KPIs y gráficos) | `DashboardController` | `ProductoDAO`, `VentaDAO` | — |
+| Inventario | `InventarioController` | `ProductoDAO` | `Producto` |
+| Punto de venta (POS) | `POSController` | `VentaDAO`, `ProductoDAO`, `CajaDAO` | `Venta`, `DetalleVenta` |
+| Clientes | `ClientesController` | `ClienteDAO` | `Cliente` |
+| Movimientos de stock | `MovimientosController` | `MovimientoDAO` | `Movimiento` |
+| Proveedores | `ProveedoresController` | `ProveedorDAO` | `Proveedor` |
+| Caja diaria | `CajaController` | `CajaDAO` | `Caja` |
+| Reportes y exportación | `ReportesController` | `VentaDAO`, `ProductoDAO` | — |
+| Usuarios y roles | `UsuariosController` | `UsuarioDAO` | `Usuario` |
+| Auditoría | `AuditoriaController` | `AuditoriaDAO` | — |
+| Configuración del negocio | `ConfiguracionController` | `ConfiguracionDAO` | — |
+
 ## 📦 Empaquetado como ejecutable (.exe)
 
 Para distribuir la app en Windows con **jpackage** (incluido en el JDK):
