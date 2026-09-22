@@ -95,6 +95,10 @@ public class ConfiguracionController {
     }
 
     @FXML private void activarPro() {
+        if (!LicenciaManager.getInstance().tieneSecretoConfigurado()) {
+            mensaje("La activación Pro no está configurada en este equipo.", true);
+            return;
+        }
         Dialog<ButtonType> d = new Dialog<>();
         d.setTitle("Activar versión Pro");
         d.setHeaderText("Ingresa el titular y la clave de tu licencia.");

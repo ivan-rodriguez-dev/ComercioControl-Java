@@ -4,7 +4,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * Herramienta PRIVADA para emitir claves Pro. NO la distribuyas con la app.
- * Debe usar el MISMO secreto y algoritmo que app.util.LicenciaManager.
+ * Usa el mismo secreto configurado que app.util.LicenciaManager.
  *
  * Uso (Java 11+):
  *   java tools/GeneradorLicencia.java "Nombre del Titular"
@@ -15,26 +15,31 @@ import java.nio.charset.StandardCharsets;
  */
 public class GeneradorLicencia {
 
-    // ⚠ Debe coincidir con SECRETO en app.util.LicenciaManager
-    private static final String SECRETO = "C0merc10C0ntr0l::2026::cl4v3-pr1v4d4";
+    private static final String ENV_SECRETO = "COMERCIOCONTROL_LICENCIA_SECRETO";
 
     public static void main(String[] args) throws Exception {
-        if (args.length == 0) {
-            System.out.println("Uso: java tools/GeneradorLicencia.java \"Nombre del Titular\"");
+        String secreto = obtenerSecreto();
+        if (secreto == null || args.length == 0) {
+            System.out.println("Uso: define COMERCIOCONTROL_LICENCIA_SECRETO y ejecuta java tools/GeneradorLicencia.java \"Nombre del Titular\"");
             return;
         }
         String titular = String.join(" ", args);
         System.out.println("Titular: " + titular);
-        System.out.println("Clave  : " + generar(titular));
+        System.out.println("Clave  : " + generar(titular, secreto));
     }
 
-    static String generar(String titular) throws Exception {
+    static String generar(String titular, String secreto) throws Exception {
         Mac mac = Mac.getInstance("HmacSHA256");
         mac.init(new SecretKeySpec(SECRETO.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
         byte[] h = mac.doFinal(titular.trim().toUpperCase().getBytes(StandardCharsets.UTF_8));
         String b32 = base32(h).substring(0, 20);
         return "CCPRO-" + b32.substring(0, 5) + "-" + b32.substring(5, 10)
                 + "-" + b32.substring(10, 15) + "-" + b32.substring(15, 20);
+    }
+
+    private static String obtenerSecreto() {
+        String secreto = System.getenv(ENV_SECRETO);
+        return secreto == null || secreto.isBlank() ? null : secreto;
     }
 
     static String base32(byte[] data) {

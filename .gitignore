@@ -41,6 +41,9 @@ build/
 # Base de datos local (se genera sola)
 *.db
 
+# Configuración local con secretos
+.env
+
 # Recibos PDF generados en tiempo de ejecución
 /recibos/
 

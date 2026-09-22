@@ -16,8 +16,8 @@ import java.util.Properties;
  * Así cada cliente recibe una clave única atada a su nombre. El mismo algoritmo
  * (ver generarClave) se usa para emitir las claves desde la herramienta privada.
  *
- * Nota: el secreto va embebido en la app; como Java es decompilable, esto NO es
- * seguridad fuerte, sino una barrera razonable para el mercado objetivo.
+ * El secreto se obtiene de una propiedad del sistema o de una variable de entorno,
+ * para que no quede expuesto en el código fuente.
  */
 public class LicenciaManager {
 
@@ -32,8 +32,8 @@ public class LicenciaManager {
     private static final String K_TITULAR = "licencia_titular";
     private static final String K_CLAVE   = "licencia_clave";
 
-    // Cámbialo por tu propio secreto y mantenlo en privado.
-    private static final String SECRETO = "C0merc10C0ntr0l::2026::cl4v3-pr1v4d4";
+    private static final String PROP_SECRETO = "comerciocontrol.licencia.secreto";
+    private static final String ENV_SECRETO = "COMERCIOCONTROL_LICENCIA_SECRETO";
 
     private static LicenciaManager instancia;
 
@@ -51,7 +51,7 @@ public class LicenciaManager {
     public void recargar() {
         String t = dao.get(K_TITULAR, null);
         String c = dao.get(K_CLAVE, null);
-        if (t != null && c != null && c.equalsIgnoreCase(generarClave(t))) {
+        if (t != null && c != null && tieneSecretoConfigurado() && c.equalsIgnoreCase(generarClave(t))) {
             edicion = Edicion.PRO;
             titular = t;
         } else {
@@ -64,10 +64,11 @@ public class LicenciaManager {
     public boolean esPro()  { return edicion == Edicion.PRO; }
     public boolean esLite() { return edicion == Edicion.LITE; }
     public String getTitular() { return titular; }
+    public boolean tieneSecretoConfigurado() { return obtenerSecreto() != null; }
 
     /** Intenta activar Pro con el titular y la clave. Devuelve true si la clave es válida. */
     public boolean activar(String titular, String clave) {
-        if (titular == null || clave == null) return false;
+        if (!tieneSecretoConfigurado() || titular == null || clave == null) return false;
         String t = titular.trim();
         if (t.isEmpty()) return false;
         if (!clave.trim().equalsIgnoreCase(generarClave(t))) return false;
@@ -106,16 +107,24 @@ public class LicenciaManager {
 
     /** Genera la clave determinística para un titular. Úsalo también para emitir claves. */
     public static String generarClave(String titular) {
+        String secreto = obtenerSecreto();
+        if (secreto == null || titular == null || titular.isBlank()) return null;
         try {
             Mac mac = Mac.getInstance("HmacSHA256");
-            mac.init(new SecretKeySpec(SECRETO.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
+            mac.init(new SecretKeySpec(secreto.getBytes(StandardCharsets.UTF_8), "HmacSHA256"));
             byte[] h = mac.doFinal(titular.trim().toUpperCase().getBytes(StandardCharsets.UTF_8));
             String b32 = base32(h).substring(0, 20);
             return "CCPRO-" + b32.substring(0, 5) + "-" + b32.substring(5, 10)
                     + "-" + b32.substring(10, 15) + "-" + b32.substring(15, 20);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            return null;
         }
+    }
+
+    private static String obtenerSecreto() {
+        String secreto = System.getProperty(PROP_SECRETO);
+        if (secreto == null || secreto.isBlank()) secreto = System.getenv(ENV_SECRETO);
+        return secreto == null || secreto.isBlank() ? null : secreto;
     }
 
     private static String base32(byte[] data) {
