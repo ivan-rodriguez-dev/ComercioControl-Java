@@ -50,17 +50,48 @@ Construida con **JavaFX 17** y **SQLite** (sin servidor: la base de datos es un 
 | Apache POI | Exportación a Excel |
 | Maven | Construcción y dependencias |
 
-## 🚀 Requisitos
+## Requisitos del sistema
 
 - **Java JDK 17** o superior
 - **Maven 3.8+**
 
 Las dependencias se descargan automáticamente vía Maven.
 
-## ▶️ Cómo ejecutar
+## Instalación
+
+1. Instale un JDK 17 o superior y Maven 3.8 o superior.
+2. Clone el repositorio y abra una terminal en su carpeta.
+3. Ejecute `mvn clean package` para descargar las dependencias y construir el proyecto.
+4. Configure la variable de entorno de licencia solo en los equipos autorizados para emitir o activar licencias Pro. Sin ella, la aplicación inicia normalmente en edición Lite gratuita.
+
+## Variables de entorno
+
+Copie `.env.example` como referencia, pero no suba un archivo `.env` con valores reales. La aplicación lee `COMERCIOCONTROL_LICENCIA_SECRETO`; también admite la propiedad de Java `-Dcomerciocontrol.licencia.secreto=...`, que tiene prioridad.
+
+En PowerShell, para la sesión actual:
+
+```powershell
+$env:COMERCIOCONTROL_LICENCIA_SECRETO = "un-secreto-nuevo-largo-y-aleatorio"
+```
+
+En Windows, para dejarla definida para el usuario actual de forma permanente, cierre y abra una nueva terminal después de ejecutar:
+
+```powershell
+[Environment]::SetEnvironmentVariable("COMERCIOCONTROL_LICENCIA_SECRETO", "un-secreto-nuevo-largo-y-aleatorio", "User")
+```
+
+El secreto anterior estuvo expuesto en el historial público: genere y use uno nuevo antes de distribuir o emitir licencias. Si la variable no está configurada, la activación Pro informa que no está configurada en ese equipo y la aplicación continúa en Lite sin excepciones.
+
+## Comandos de ejecución
 
 ```bash
 mvn clean javafx:run
+```
+
+Para compilar sin iniciar la interfaz:
+
+```bash
+mvn clean compile
 ```
 
 La base de datos `comerciocontrol.db` se crea sola en el directorio de ejecución la primera
@@ -122,6 +153,10 @@ los únicos que conocen la base de datos.
 | Usuarios y roles | `UsuariosController` | `UsuarioDAO` | `Usuario` |
 | Auditoría | `AuditoriaController` | `AuditoriaDAO` | — |
 | Configuración del negocio | `ConfiguracionController` | `ConfiguracionDAO` | — |
+
+## Relación con la API
+
+Esta aplicación de escritorio funciona actualmente con SQLite local mediante los DAO descritos arriba. La API complementaria del proyecto está disponible en [API-PROYECTO-](https://github.com/ivan-rodriguez-dev/API-PROYECTO-); cualquier integración futura debe conservar los límites de módulos, reemplazando o complementando el acceso local desde la capa de infraestructura, sin exponer secretos en el cliente.
 
 ## 📦 Empaquetado como ejecutable (.exe)
 
