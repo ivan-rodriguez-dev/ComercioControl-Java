@@ -14,6 +14,14 @@ public class Rutas {
 
     public static File base() {
         if (baseDir == null) {
+            // Permite fijar otra carpeta de datos (lo usan las pruebas para no tocar la BD real)
+            String override = System.getProperty("comerciocontrol.datos");
+            if (override != null && !override.isBlank()) {
+                File o = new File(override);
+                o.mkdirs();
+                baseDir = o;
+                return baseDir;
+            }
             String appdata = System.getenv("APPDATA");
             File b = (appdata != null && !appdata.isBlank())
                     ? new File(appdata, "ComercioControl")
