@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import app.util.CalculadoraVenta;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -276,15 +277,10 @@ public class POSController {
             subtotal = subtotal.add(p.getPrecioVenta().multiply(BigDecimal.valueOf(entry.getValue())));
         }
 
-        double descPct = 0;
-        try { descPct = Double.parseDouble(txtDescuento.getText().trim()); } catch (Exception ignored) {}
-        if (descPct < 0) descPct = 0;
-        if (descPct > 100) descPct = 100;
-
-        BigDecimal descuento = subtotal.multiply(BigDecimal.valueOf(descPct / 100)).setScale(0, RoundingMode.HALF_UP);
-        BigDecimal baseIva = subtotal.subtract(descuento);
-        BigDecimal iva = baseIva.multiply(BigDecimal.valueOf(0.19)).setScale(0, RoundingMode.HALF_UP);
-        BigDecimal total = baseIva.add(iva);
+        CalculadoraVenta.Totales t = CalculadoraVenta.calcular(subtotal,
+                CalculadoraVenta.porcentajeDescuento(txtDescuento.getText()));
+        BigDecimal iva = t.iva();
+        BigDecimal total = t.total();
 
         lblSubtotal.setText(FormatUtil.formatearPrecio(subtotal));
         lblIva.setText(FormatUtil.formatearPrecio(iva));
@@ -398,12 +394,12 @@ public class POSController {
             detalles.add(new DetalleVenta(p.getId(), p.getNombre(), qty, p.getPrecioVenta()));
         }
 
-        double descPct = 0;
-        try { descPct = Double.parseDouble(txtDescuento.getText().trim()); } catch (Exception ignored) {}
-        BigDecimal descuento = subtotal.multiply(BigDecimal.valueOf(descPct / 100)).setScale(0, RoundingMode.HALF_UP);
-        BigDecimal baseIva = subtotal.subtract(descuento);
-        BigDecimal iva = baseIva.multiply(BigDecimal.valueOf(0.19)).setScale(0, RoundingMode.HALF_UP);
-        BigDecimal total = baseIva.add(iva);
+        // Mismo cálculo que la vista previa: el descuento se limita a 0-100 % (INC-02)
+        CalculadoraVenta.Totales t = CalculadoraVenta.calcular(subtotal,
+                CalculadoraVenta.porcentajeDescuento(txtDescuento.getText()));
+        BigDecimal descuento = t.descuento();
+        BigDecimal iva = t.iva();
+        BigDecimal total = t.total();
 
         // Confirmar cobro
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);

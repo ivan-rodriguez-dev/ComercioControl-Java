@@ -269,7 +269,16 @@ public class InventarioController {
         confirm.setContentText("Esta acción no se puede deshacer.");
         confirm.showAndWait().ifPresent(btn -> {
             if (btn == ButtonType.OK) {
-                productoDAO.eliminar(p.getId());
+                try {
+                    productoDAO.eliminar(p.getId());
+                } catch (IllegalStateException ex) {
+                    Alert aviso = new Alert(Alert.AlertType.WARNING);
+                    aviso.setTitle("No se puede eliminar");
+                    aviso.setHeaderText("\"" + p.getNombre() + "\" tiene historial");
+                    aviso.setContentText(ex.getMessage());
+                    aviso.showAndWait();
+                    return;
+                }
                 cargarProductos();
                 cargarFiltros();
                 cargarResumen();

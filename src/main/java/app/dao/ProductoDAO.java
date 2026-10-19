@@ -128,7 +128,32 @@ public class ProductoDAO {
         }
     }
 
+    /** Indica si el producto tiene ventas o movimientos registrados (no se puede borrar). */
+    public boolean tieneHistorial(int id) {
+        String sql = """
+            SELECT (SELECT COUNT(*) FROM detalle_ventas WHERE producto_id = ?)
+                 + (SELECT COUNT(*) FROM movimientos    WHERE producto_id = ?)
+        """;
+        try (Connection conn = ConexionSQLite.conectar();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            ps.setInt(2, id);
+            ResultSet rs = ps.executeQuery();
+            return rs.next() && rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Elimina el producto. Si tiene historial lanza IllegalStateException con un
+     * mensaje para el usuario, en lugar del error de clave foránea (corrección INC-01).
+     */
     public void eliminar(int id) {
+        if (tieneHistorial(id)) {
+            throw new IllegalStateException("No se puede eliminar: el producto tiene historial de ventas o "
+                    + "movimientos. Para conservar la trazabilidad, deja su stock en 0 en lugar de borrarlo.");
+        }
         String sql = "DELETE FROM productos WHERE id = ?";
         try (Connection conn = ConexionSQLite.conectar();
              PreparedStatement ps = conn.prepareStatement(sql)) {
